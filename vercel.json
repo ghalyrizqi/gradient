@@ -1,4 +1,10 @@
 {
+  "buildCommand": "npm run build",
+  "functions": {
+    "api/gradient/seed.js": {},
+    "api/gradient/color.js": {},
+    "api/gradient/text.js": {}
+  },
   "rewrites": [
     { "source": "/docs",                  "destination": "/docs.html" },
     { "source": "/((?!api/|docs$).*)",    "destination": "/index.html" }

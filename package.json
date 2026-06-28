@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc -b && vite build",
+    "build": "vue-tsc -b && vite build && node scripts/bundle-api.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -16,6 +16,7 @@
     "@types/node": "^24.12.3",
     "@vitejs/plugin-vue": "^6.0.6",
     "@vue/tsconfig": "^0.9.1",
+    "esbuild": "^0.28.1",
     "typescript": "~6.0.2",
     "vite": "^8.0.12",
     "vue-tsc": "^3.2.8"
