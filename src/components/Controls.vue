@@ -5,7 +5,7 @@ import { NIPPON_POOL } from '../core/nipponPool';
 
 export interface ControlState {
   inputMode: 'text' | 'color' | 'custom';
-  displayMode: 'window' | 'frontpage' | 'phone';
+  displayMode: 'window' | 'phone';
   query: string;
   color: string;
   style: JapaneseStyle;
@@ -17,7 +17,7 @@ export interface ControlState {
 const emit = defineEmits<{ (e: 'change', state: ControlState): void }>();
 
 const inputMode   = ref<'text' | 'color' | 'custom'>('color');
-const displayMode = ref<'window' | 'frontpage' | 'phone'>('window');
+const displayMode = ref<'window' | 'phone'>('window');
 const query       = ref('');
 const color       = ref('#3a6ea5');
 const style       = ref<JapaneseStyle>('vivid');
@@ -187,12 +187,6 @@ defineExpose({ updateColor });
           :aria-pressed="displayMode === 'window'"
           type="button"
         >Window</button>
-        <button
-          :class="['seg-btn', { active: displayMode === 'frontpage' }]"
-          @click="displayMode = 'frontpage'"
-          :aria-pressed="displayMode === 'frontpage'"
-          type="button"
-        >Front Page</button>
         <button
           :class="['seg-btn', { active: displayMode === 'phone' }]"
           @click="displayMode = 'phone'"

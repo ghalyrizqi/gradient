@@ -3,11 +3,10 @@ import { ref, nextTick } from 'vue';
 import { useGradient } from './composables/useGradient';
 import Controls, { type ControlState } from './components/Controls.vue';
 import WindowView from './components/WindowView.vue';
-import FrontPageView from './components/FrontPageView.vue';
 import PhoneWallpaperView from './components/PhoneWallpaperView.vue';
 
 const { state, loading, resolve } = useGradient();
-const displayMode = ref<'window' | 'frontpage' | 'phone'>('window');
+const displayMode = ref<'window' | 'phone'>('window');
 
 interface ControlsExpose { updateColor: (hex: string) => void }
 const controlsRef = ref<ControlsExpose | null>(null);
@@ -81,12 +80,11 @@ async function onControlChange(controls: ControlState) {
 </script>
 
 <template>
-  <div class="studio" :class="{ 'studio--frontpage': displayMode === 'frontpage' }">
+  <div class="studio">
 
     <!-- Left: sky canvas -->
     <div class="studio-canvas" :class="{ 'studio-canvas--loading': loading }">
       <WindowView v-if="displayMode === 'window'" :state="state" />
-      <FrontPageView v-else-if="displayMode === 'frontpage'" :state="state" />
       <PhoneWallpaperView v-else :state="state" />
     </div>
 
@@ -130,14 +128,6 @@ async function onControlChange(controls: ControlState) {
 }
 
 .studio-canvas--loading { opacity: 0.45; pointer-events: none; }
-
-/* Front page mode: canvas fills edge-to-edge (no centering padding) */
-.studio--frontpage .studio-canvas {
-  padding: 0;
-  align-items: flex-start;
-  justify-content: center;
-  overflow-y: auto;
-}
 
 /* ── Instrument panel ────────────────────────────────────────────── */
 .studio-panel {
