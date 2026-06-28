@@ -386,7 +386,7 @@ defineExpose({ updateColor });
   border: 1px solid var(--color-glass-rule);
   border-radius: var(--radius-lg);
   background: var(--color-glass);
-  backdrop-filter: blur(18px) saturate(135%);
+  backdrop-filter: blur(28px) saturate(165%);
 }
 
 .seg-btn {
@@ -431,7 +431,7 @@ defineExpose({ updateColor });
   padding: var(--s3) var(--s4);
   cursor: pointer;
   text-align: center;
-  backdrop-filter: blur(18px) saturate(135%);
+  backdrop-filter: blur(28px) saturate(165%);
   transition: color 120ms var(--ease-out), border-color 120ms var(--ease-out), background 120ms var(--ease-out), transform 120ms var(--ease-out);
   white-space: nowrap;
   overflow: hidden;
@@ -440,7 +440,7 @@ defineExpose({ updateColor });
 
 .style-btn:hover    { color: var(--color-ink); border-color: var(--color-glass-rule-strong); background: var(--color-glass-hover); }
 .style-btn:active   { transform: translateY(1px); }
-.style-btn.active   { color: var(--color-ink); border-color: var(--color-accent-soft); background: var(--color-glass-active); }
+.style-btn.active   { color: var(--color-ink); border-color: var(--color-accent-soft); background: var(--color-glass-active); box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.10); }
 .style-btn:focus-visible { outline: 1.5px solid var(--color-focus); outline-offset: 2px; }
 
 /* ── Sky text input ──────────────────────────────────────────────── */
@@ -471,7 +471,7 @@ defineExpose({ updateColor });
   overflow: hidden;
   min-height: 44px;
   max-height: 240px;
-  backdrop-filter: blur(18px) saturate(135%);
+  backdrop-filter: blur(28px) saturate(165%);
   transition: border-color 120ms var(--ease-out), background 120ms var(--ease-out);
   box-sizing: border-box;
 }
@@ -508,7 +508,7 @@ defineExpose({ updateColor });
   min-height: 44px;
   display: flex;
   align-items: center;
-  backdrop-filter: blur(18px) saturate(135%);
+  backdrop-filter: blur(28px) saturate(165%);
   transition: color 120ms var(--ease-out), border-color 120ms var(--ease-out), background 120ms var(--ease-out), transform 120ms var(--ease-out);
 }
 
@@ -537,7 +537,7 @@ defineExpose({ updateColor });
   border: 1px solid var(--color-glass-rule);
   border-radius: var(--radius-lg);
   background: var(--color-glass);
-  backdrop-filter: blur(18px) saturate(135%);
+  backdrop-filter: blur(28px) saturate(165%);
 }
 
 .color-swatch {
@@ -582,7 +582,7 @@ defineExpose({ updateColor });
   border-radius: var(--radius-lg);
   cursor: pointer;
   text-align: left;
-  backdrop-filter: blur(18px) saturate(135%);
+  backdrop-filter: blur(28px) saturate(165%);
   transition: color 120ms var(--ease-out), border-color 120ms var(--ease-out), background 120ms var(--ease-out), transform 120ms var(--ease-out);
 }
 
@@ -665,7 +665,7 @@ defineExpose({ updateColor });
   background: var(--color-glass);
   border: 1px solid var(--color-glass-rule);
   border-radius: var(--radius-lg);
-  backdrop-filter: blur(18px) saturate(135%);
+  backdrop-filter: blur(28px) saturate(165%);
   cursor: pointer;
   transition: border-color 120ms var(--ease-out), background 120ms var(--ease-out);
 }

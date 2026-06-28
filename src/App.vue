@@ -94,7 +94,10 @@ async function onControlChange(controls: ControlState) {
     <aside class="studio-panel">
       <header class="panel-head">
         <span class="panel-wordmark">Small Window</span>
-        <span v-if="loading" class="panel-busy" aria-live="polite" aria-label="loading">·</span>
+        <div class="panel-head-right">
+          <span v-if="loading" class="panel-busy" aria-live="polite" aria-label="loading">·</span>
+          <a href="/docs" class="panel-api-link">API</a>
+        </div>
       </header>
       <Controls ref="controlsRef" @change="onControlChange" />
     </aside>
@@ -111,7 +114,9 @@ async function onControlChange(controls: ControlState) {
   grid-template-columns: 1fr minmax(320px, 380px);
   min-height: 100vh;
   background:
-    linear-gradient(120deg, var(--color-paper), var(--color-paper-2));
+    radial-gradient(ellipse 70% 60% at 8% 88%, oklch(0.17 0.042 250 / 0.50) 0%, transparent 52%),
+    radial-gradient(ellipse 55% 48% at 88% 12%, oklch(0.15 0.052 262 / 0.40) 0%, transparent 48%),
+    var(--color-paper);
 }
 
 /* ── Canvas pane ─────────────────────────────────────────────────── */
@@ -137,11 +142,11 @@ async function onControlChange(controls: ControlState) {
 /* ── Instrument panel ────────────────────────────────────────────── */
 .studio-panel {
   margin: var(--s4) var(--s4) var(--s4) 0;
-  background: var(--color-panel-glass);
-  border: 1px solid var(--color-glass-rule);
+  background: var(--glass-bg-panel);
+  border: 1px solid oklch(1 0 0 / 0.09);
   border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-panel);
-  backdrop-filter: blur(26px) saturate(140%);
+  box-shadow: var(--shadow-glass-lg);
+  backdrop-filter: blur(36px) saturate(175%);
   display: flex;
   flex-direction: column;
   min-height: calc(100vh - var(--s6));
@@ -152,10 +157,16 @@ async function onControlChange(controls: ControlState) {
 .panel-head {
   display: flex;
   align-items: center;
-  gap: var(--s3);
+  justify-content: space-between;
   padding: var(--s4) var(--s5);
-  border-bottom: 1px solid var(--color-glass-rule);
+  border-bottom: 1px solid oklch(1 0 0 / 0.07);
   flex-shrink: 0;
+}
+
+.panel-head-right {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
 }
 
 .panel-wordmark {
@@ -181,6 +192,17 @@ async function onControlChange(controls: ControlState) {
   50%       { opacity: 0; }
 }
 
+.panel-api-link {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--color-ink-3);
+  transition: color 120ms;
+}
+.panel-api-link:hover { color: var(--color-accent); }
+
 /* ── Mobile: single column ───────────────────────────────────────── */
 @media (max-width: 768px) {
   .studio {
@@ -196,6 +218,7 @@ async function onControlChange(controls: ControlState) {
     border-left: none;
     border-right: none;
     border-bottom: none;
+    border-top: 1px solid oklch(1 0 0 / 0.09);
     border-radius: var(--radius-xl) var(--radius-xl) 0 0;
     min-height: auto;
     max-height: none;

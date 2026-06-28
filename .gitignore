@@ -31,3 +31,4 @@ ds-bundle/
 .hallmark/
 memory/
 skills-lock.json
+.vercel

@@ -89,4 +89,11 @@
   /* ── Easings ─────────────────────────────────────────────────────*/
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in:  cubic-bezier(0.7, 0, 0.84, 0);
+
+  /* ── Enhanced glass — glassmorphism layer ────────────────────── */
+  --glass-bg-panel: oklch(0.16 0.018 245 / 0.52);
+  --glass-bg-card:  oklch(0.16 0.018 245 / 0.55);
+  --shadow-glass-sm:    inset 0 1px 0 oklch(1 0 0 / 0.08), 0 8px 24px oklch(0 0 0 / 0.28);
+  --shadow-glass-panel: inset 0 1px 0 oklch(1 0 0 / 0.09), 0 16px 48px oklch(0 0 0 / 0.36);
+  --shadow-glass-lg:    inset 0 1px 0 oklch(1 0 0 / 0.10), 0 28px 72px oklch(0 0 0 / 0.44);
 }
