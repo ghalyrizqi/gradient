@@ -150,15 +150,17 @@ function _hexToHsl(hex: string): { h: number; s: number; l: number } {
   return { h: h * 360, s: s * 100, l: l * 100 };
 }
 
-// One entry per brand: use the first pool entry (primary color).
+// One entry per lookup key. `term` gives themed entries their own key;
+// plain brand entries fall back to using `brand` as before.
 const _seen = new Set<string>();
 const BRAND_LOOKUP: Record<string, { h: number; s: number; l: number; label: string }> = {};
 
 for (const b of BRAND_POOL) {
-  if (!_seen.has(b.brand)) {
-    _seen.add(b.brand);
+  const key = (b.term ?? b.brand).toLowerCase();
+  if (!_seen.has(key)) {
+    _seen.add(key);
     const hsl = _hexToHsl(b.hex);
-    BRAND_LOOKUP[b.brand.toLowerCase()] = { ...hsl, label: b.name.toLowerCase() };
+    BRAND_LOOKUP[key] = { ...hsl, label: b.name.toLowerCase() };
   }
 }
 

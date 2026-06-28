@@ -3,9 +3,10 @@ import type { JapaneseStyle } from './types';
 export interface BrandColor {
   name: string;
   brand: string;
+  term?: string;   // detection keyword (overrides brand for lookup key)
   hex: string;
   style: JapaneseStyle;
-  category: 'language' | 'database' | 'tool';
+  category: 'language' | 'database' | 'tool' | 'theme';
 }
 
 export const BRAND_POOL: BrandColor[] = [
@@ -42,4 +43,24 @@ export const BRAND_POOL: BrandColor[] = [
   { name: 'Docker Slate',     brand: 'Docker',       hex: '#384D54', style: 'veil',  category: 'tool' },
   { name: 'Linux Blue',       brand: 'Linux',        hex: '#1793D1', style: 'vivid', category: 'tool' },
   { name: 'Git Vermillion',   brand: 'Git',          hex: '#F05032', style: 'vivid', category: 'tool' },
+
+  // ── Omarchy Themes (by basecamp/omarchy) ──────────────────────────
+  // `term` gives each theme its own detection keyword in the text resolver.
+  { name: 'Vantablack',       brand: 'Omarchy', term: 'vantablack',       hex: '#8d8d8d', style: 'veil',  category: 'theme' },
+  { name: 'Matte Black',      brand: 'Omarchy', term: 'matte black',      hex: '#e68e0d', style: 'vivid', category: 'theme' },
+  { name: 'Hackerman',        brand: 'Omarchy', term: 'hackerman',        hex: '#82FB9C', style: 'vivid', category: 'theme' },
+  { name: 'Tokyo Night',      brand: 'Omarchy', term: 'tokyo night',      hex: '#7aa2f7', style: 'vivid', category: 'theme' },
+  { name: 'Last Horizon',     brand: 'Omarchy', term: 'last horizon',     hex: '#b59790', style: 'veil',  category: 'theme' },
+  { name: 'Lumon',            brand: 'Omarchy', term: 'lumon',            hex: '#8bc9eb', style: 'vivid', category: 'theme' },
+  { name: 'Ristretto',        brand: 'Omarchy', term: 'ristretto',        hex: '#f38d70', style: 'vivid', category: 'theme' },
+  { name: 'Osaka Jade',       brand: 'Omarchy', term: 'osaka jade',       hex: '#509475', style: 'vivid', category: 'theme' },
+  { name: 'Rose Pine',        brand: 'Omarchy', term: 'rose pine',        hex: '#56949f', style: 'vivid', category: 'theme' },
+  { name: 'Nord',             brand: 'Omarchy', term: 'nord',             hex: '#81a1c1', style: 'vivid', category: 'theme' },
+  { name: 'Retro 82',         brand: 'Omarchy', term: 'retro 82',         hex: '#faa968', style: 'vivid', category: 'theme' },
+  { name: 'Solitude',         brand: 'Omarchy', term: 'solitude',         hex: '#798186', style: 'veil',  category: 'theme' },
+  { name: 'Everforest',       brand: 'Omarchy', term: 'everforest',       hex: '#7fbbb3', style: 'vivid', category: 'theme' },
+  { name: 'Catppuccin Mocha', brand: 'Omarchy', term: 'catppuccin',       hex: '#89b4fa', style: 'vivid', category: 'theme' },
+  { name: 'Catppuccin Latte', brand: 'Omarchy', term: 'catppuccin latte', hex: '#1e66f5', style: 'vivid', category: 'theme' },
+  { name: 'Omarchy Green',    brand: 'Omarchy', term: 'omarchy',          hex: '#9ece6a', style: 'vivid', category: 'theme' },
+  { name: 'Omarchy Turquoise',brand: 'Omarchy', term: 'omarchy turquoise',hex: '#b4f9f8', style: 'vivid', category: 'theme' },
 ];
