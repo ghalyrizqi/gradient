@@ -1,0 +1,92 @@
+/* Hallmark · pre-emit critique: P5 H5 E4 S5 R5 V5 */
+/* Hallmark · macrostructure: Split Studio · tone: atmospheric glass · anchor hue: sora-blue
+ * theme: custom (vibe: "nuevo.tokyo glass, Shibuya sunrise"
+ *   · paper oklch(0.11 0.010 250) · accent oklch(0.76 0.10 220) sora-blue
+ *   · DM Mono primary + DM Sans secondary)
+ * paper-band: dark / display-style: mono / accent-hue: cool
+ * genre: atmospheric · studied: no
+ */
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@300;400;500&display=swap");
+
+:root {
+  /* ── Color: paper (dark) ─────────────────────────────────────────
+     Deep observatory black. The gradient canvas is the only source
+     of colour; every surface around it is near-black.               */
+  --color-paper:    oklch(0.11 0.010 250);   /* page background              */
+  --color-paper-2:  oklch(0.16 0.014 245);   /* panel depth                  */
+  --color-paper-3:  oklch(0.22 0.016 245);   /* hover states                 */
+  --color-rule:     oklch(0.30 0.020 245 / 0.45);
+  --color-rule-mid: oklch(0.62 0.040 230 / 0.44);
+  --color-panel-glass: oklch(0.18 0.018 245 / 0.58);
+  --color-glass: oklch(0.98 0.012 95 / 0.075);
+  --color-glass-hover: oklch(0.98 0.012 95 / 0.12);
+  --color-glass-active: oklch(0.98 0.012 95 / 0.17);
+  --color-glass-rule: oklch(0.98 0.006 95 / 0.12);
+  --color-glass-rule-strong: oklch(0.98 0.006 95 / 0.24);
+  --color-swatch-sheen: oklch(1 0 0 / 0.08);
+
+  /* ── Color: ink (light-on-dark) ─────────────────────────────────
+     Warm off-white primary — avoids the cold blue-white of pure white
+     on a navy background. Each step dims toward the panel.          */
+  --color-ink:      oklch(0.92 0.005 80);    /* primary text                 */
+  --color-ink-2:    oklch(0.75 0.006 80);    /* secondary text               */
+  --color-ink-3:    oklch(0.52 0.005 80);    /* muted labels                 */
+  --color-ink-4:    oklch(0.32 0.005 80);    /* placeholder, very dim        */
+
+  /* ── Accent: aurora lavender-blue ───────────────────────────────
+     One chromatic accent — used only for active states and the
+     loading indicator. Nothing else gets this colour.               */
+  --color-accent:   oklch(0.76 0.10 220);
+  --color-accent-soft: oklch(0.82 0.09 210 / 0.62);
+  --color-focus:    oklch(0.82 0.09 210);
+  --color-warn:     oklch(0.62 0.14 40);    /* char-count near-limit  */
+
+  /* ── Legacy aliases (referenced by FrontPageView + other components) */
+  --ink:       var(--color-ink);
+  --paper:     var(--color-paper);
+  --muted:     var(--color-ink-3);
+  --line:      var(--color-rule);
+  --line-dark: var(--color-rule-mid);
+
+  /* ── Fonts: mono-primary ─────────────────────────────────────────
+     DM Mono carries all UI chrome — it reads as an instrument panel.
+     DM Sans is reserved for the text input placeholder and body copy. */
+  --font-display: "DM Mono", "SF Mono", ui-monospace, Menlo, monospace;
+  --font-sans:    "DM Sans", system-ui, -apple-system, sans-serif;
+  --font-ui:      "DM Mono", "SF Mono", ui-monospace, Menlo, monospace;
+  --font-serif:   "Instrument Serif", Georgia, serif;
+
+  /* ── Type scale ──────────────────────────────────────────────────*/
+  --text-xs:   0.625rem;   /*  10px */
+  --text-sm:   0.75rem;    /*  12px */
+  --text-base: 0.875rem;   /*  14px */
+  --text-md:   1rem;       /*  16px */
+  --text-lg:   1.25rem;    /*  20px */
+  --text-xl:   1.5625rem;
+  --text-2xl:  1.953rem;
+  --text-3xl:  2.441rem;
+  --text-4xl:  3.052rem;
+  --text-5xl:  3.815rem;
+
+  /* ── Spacing — 4pt grid ──────────────────────────────────────────*/
+  --s1: 0.25rem;
+  --s2: 0.5rem;
+  --s3: 0.75rem;
+  --s4: 1rem;
+  --s5: 1.5rem;
+  --s6: 2rem;
+  --s7: 3rem;
+  --s8: 4.5rem;
+  --s9: 7rem;
+
+  /* ── Radius — near-zero ──────────────────────────────────────────*/
+  --radius-sm: 0px;
+  --radius-md: 2px;
+  --radius-lg: 4px;
+  --radius-xl: 8px;
+  --shadow-panel: 0 20px 70px oklch(0.02 0.01 250 / 0.42);
+
+  /* ── Easings ─────────────────────────────────────────────────────*/
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in:  cubic-bezier(0.7, 0, 0.84, 0);
+}

@@ -1,0 +1,8 @@
+{
+  "projectId": "237b842f-de31-47ac-b186-81b7424e2e8d",
+  "pkg": "gradient-app",
+  "globalName": "GradientApp",
+  "shape": "package",
+  "cssEntry": "src/style.css",
+  "tokensGlob": "src/tokens.css"
+}

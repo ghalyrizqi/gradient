@@ -1,0 +1,20 @@
+[
+  {
+    "date": "2026-06-23",
+    "macrostructure": "Split Studio",
+    "theme": "custom",
+    "theme_axes": "dark / mono / cool",
+    "vibe": "dark sky observatory, instrument panel",
+    "enrichment": "none",
+    "brief": "Gradient app — full redesign, dark observatory diptych, canvas left / instrument panel right"
+  },
+  {
+    "date": "2026-06-23",
+    "macrostructure": "Workbench",
+    "theme": "custom",
+    "theme_axes": "light / geometric-sans / neutral",
+    "vibe": "nuevo.tokyo reductionist studio",
+    "enrichment": "none",
+    "brief": "Gradient app — revamp UI to mimic nuevo.tokyo reductionist aesthetic"
+  }
+]
