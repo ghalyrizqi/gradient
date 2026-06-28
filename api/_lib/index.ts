@@ -10,7 +10,7 @@ export interface Res {
   status(code: number): Res;
   json(data: unknown): void;
   setHeader(key: string, value: string): void;
-  end(): void;
+  end(data?: string): void;
 }
 
 export function cors(res: Res): void {
