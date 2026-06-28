@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
 await Promise.all(
-  ['seed', 'color', 'text'].map(name =>
+  ['seed', 'color', 'text', 'image'].map(name =>
     build({
       entryPoints: [resolve(root, `api/gradient/${name}.ts`)],
       bundle: true,
