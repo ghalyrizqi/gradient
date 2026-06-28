@@ -1,4 +1,4 @@
-import type { JapaneseStyle, ColorStop } from './types';
+import type { JapaneseStyle, ColorStop } from './types.ts';
 
 // ── Types ──────────────────────────────────────────────────────────
 

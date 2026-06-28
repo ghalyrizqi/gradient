@@ -1,4 +1,4 @@
-import type { JapaneseStyle } from './types';
+import type { JapaneseStyle } from './types.ts';
 
 export interface NipponColor {
   name: string;

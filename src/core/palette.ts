@@ -1,5 +1,5 @@
-import { generateSkyGradient, MOMENT_HOURS } from './skyGradient';
-import type { GradientState, JapaneseStyle } from './types';
+import { generateSkyGradient, MOMENT_HOURS } from './skyGradient.ts';
+import type { GradientState, JapaneseStyle } from './types.ts';
 
 export function defaultGradientState(): GradientState {
   const sky = generateSkyGradient();

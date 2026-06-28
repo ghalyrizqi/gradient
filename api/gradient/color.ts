@@ -1,5 +1,5 @@
-import { pickResolver } from '../../src/resolvers/index';
-import { cors, parseStyle, parseUrl, type Req, type Res } from '../_lib/index';
+import { pickResolver } from '../../src/resolvers/index.ts';
+import { cors, parseStyle, parseUrl, type Req, type Res } from '../_lib/index.ts';
 
 const HEX_RE = /^#[0-9a-fA-F]{6}$/;
 

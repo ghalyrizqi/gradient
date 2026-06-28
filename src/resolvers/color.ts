@@ -1,6 +1,6 @@
-import type { Resolver, ResolverInput, GradientState, JapaneseStyle } from '../core/types';
-import { generateSkyGradient, renderFromHsl, makeRng, pickWeightedByHue, MOMENT_HOURS, styleHslStop } from '../core/skyGradient';
-import type { HslStop } from '../core/skyGradient';
+import type { Resolver, ResolverInput, GradientState, JapaneseStyle } from '../core/types.ts';
+import { generateSkyGradient, renderFromHsl, makeRng, pickWeightedByHue, MOMENT_HOURS, styleHslStop } from '../core/skyGradient.ts';
+import type { HslStop } from '../core/skyGradient.ts';
 
 
 function hexToHsl(hex: string): [number, number, number] {

@@ -1,7 +1,7 @@
 import {
   LEXICON, EMOTION_BITS, DOMAIN, COLOR_HUES, TIME_WORDS, STOPWORDS,
-} from './lexicon';
-import { extractEntities, type ExtractedEntity } from './entities';
+} from './lexicon.ts';
+import { extractEntities, type ExtractedEntity } from './entities.ts';
 export type { ExtractedEntity };
 
 export interface EmotionScores {

@@ -1,4 +1,4 @@
-import type { GradientState } from './types';
+import type { GradientState } from './types.ts';
 
 const DPR = () => Math.min(window.devicePixelRatio ?? 1, 2);
 const REDUCED = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;

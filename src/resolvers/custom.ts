@@ -1,9 +1,9 @@
-import type { Resolver, ResolverInput, GradientState, JapaneseStyle } from '../core/types';
+import type { Resolver, ResolverInput, GradientState, JapaneseStyle } from '../core/types.ts';
 import {
   renderFromHsl, createStyleVariant, makeRng, styleHslStop,
   normalStopPositions, skyStopPositions,
-} from '../core/skyGradient';
-import type { HslStop } from '../core/skyGradient';
+} from '../core/skyGradient.ts';
+import type { HslStop } from '../core/skyGradient.ts';
 
 function hexToHsl(hex: string): HslStop {
   const r = parseInt(hex.slice(1, 3), 16) / 255;

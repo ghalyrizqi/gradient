@@ -1,12 +1,12 @@
-import type { Resolver, ResolverInput, GradientState, JapaneseStyle } from '../core/types';
-import type { HslStop } from '../core/skyGradient';
-import { analyzeText, type TextAnalysis, type ExtractedEntity } from '../core/nlp/index';
+import type { Resolver, ResolverInput, GradientState, JapaneseStyle } from '../core/types.ts';
+import type { HslStop } from '../core/skyGradient.ts';
+import { analyzeText, type TextAnalysis, type ExtractedEntity } from '../core/nlp/index.ts';
 import {
   generateSkyGradient, renderFromHsl,
   makeRng, pickWeighted, pickWeightedByHue,
   SKY_MOMENTS, MOMENT_HOURS,
-} from '../core/skyGradient';
-import { BRAND_POOL } from '../core/brandPool';
+} from '../core/skyGradient.ts';
+import { BRAND_POOL } from '../core/brandPool.ts';
 
 // ── Time-of-day selection ──────────────────────────────────────────
 

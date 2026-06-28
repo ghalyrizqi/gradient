@@ -1,8 +1,8 @@
-import type { Resolver, ResolverInput } from '../core/types';
-import { colorResolver } from './color';
-import { textResolver } from './text';
-import { customResolver } from './custom';
-import { defaultGradientState } from '../core/palette';
+import type { Resolver, ResolverInput } from '../core/types.ts';
+import { colorResolver } from './color.ts';
+import { textResolver } from './text.ts';
+import { customResolver } from './custom.ts';
+import { defaultGradientState } from '../core/palette.ts';
 
 const registry: Resolver[] = [customResolver, textResolver, colorResolver];
 

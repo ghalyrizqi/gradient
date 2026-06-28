@@ -1,4 +1,4 @@
-import type { JapaneseStyle } from '../../src/core/types';
+import type { JapaneseStyle } from '../../src/core/types.ts';
 
 // Minimal Vercel request/response shapes (no extra package needed).
 export interface Req {

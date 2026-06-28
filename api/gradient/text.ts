@@ -1,5 +1,5 @@
-import { pickResolver } from '../../src/resolvers/index';
-import { cors, parseStyle, parseUrl, type Req, type Res } from '../_lib/index';
+import { pickResolver } from '../../src/resolvers/index.ts';
+import { cors, parseStyle, parseUrl, type Req, type Res } from '../_lib/index.ts';
 
 export default async function handler(req: Req, res: Res) {
   cors(res);

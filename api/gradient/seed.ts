@@ -1,5 +1,5 @@
-import { pickResolver } from '../../src/resolvers/index';
-import { cors, parseStyle, parseUrl, type Req, type Res } from '../_lib/index';
+import { pickResolver } from '../../src/resolvers/index.ts';
+import { cors, parseStyle, parseUrl, type Req, type Res } from '../_lib/index.ts';
 
 // Deterministic gradient from any opaque string (project slug, user ID, etc.).
 // Internally routes through the text resolver so brand/NLP signals still fire,
