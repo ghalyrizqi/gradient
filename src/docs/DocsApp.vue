@@ -39,6 +39,24 @@ const heroGradientCss = ref(
 );
 const copiedKey = ref<string | null>(null);
 
+const vividCss = ref(
+  'linear-gradient(to bottom in oklab, hsl(215 70% 42%) 0%, hsl(28 72% 58%) 68%, hsl(348 48% 68%) 100%)'
+);
+const veilCss = ref(
+  'linear-gradient(to bottom in oklab, hsl(215 30% 52%) 0%, hsl(28 28% 64%) 68%, hsl(348 18% 70%) 100%)'
+);
+
+const coreMoments = [
+  'first light', 'dawn', 'clear morning', 'hazy morning', 'midday',
+  'golden hour', 'sunset', 'afterglow', 'blue hour', 'overcast',
+] as const;
+const nuevoMoments = ['city-pop dawn', 'summer haze', 'late afternoon', 'pastel dusk', 'sakura haze'] as const;
+const shoMoments = ['smog morning', 'rain grey', 'humid haze', 'deep dusk', 'midnight'] as const;
+const nipponMoments = [
+  'asagi dawn', 'fuji eve', 'toki blush', 'gunjou deep',
+  'yamabuki noon', 'enji dusk', 'rikyunezumi', 'ainezumi sky',
+] as const;
+
 const endpoints = ref<Endpoint[]>([
   {
     id: 'text',
@@ -154,6 +172,15 @@ onMounted(async () => {
       if (data.css) heroGradientCss.value = data.css;
     }
   } catch {}
+
+  try {
+    const [vividRes, veilRes] = await Promise.all([
+      fetch(`${window.location.origin}/api/gradient/seed?seed=style-compare-a&style=vivid`),
+      fetch(`${window.location.origin}/api/gradient/seed?seed=style-compare-a&style=veil`),
+    ]);
+    if (vividRes.ok) { const d = (await vividRes.json()) as { css?: string }; if (d.css) vividCss.value = d.css; }
+    if (veilRes.ok)  { const d = (await veilRes.json()) as { css?: string }; if (d.css) veilCss.value = d.css; }
+  } catch {}
 });
 </script>
 
@@ -171,6 +198,8 @@ onMounted(async () => {
         <a href="#quick-start" class="docs-nav-link">Quick Start</a>
         <a href="#endpoints"   class="docs-nav-link">Endpoints</a>
         <a href="#schema"      class="docs-nav-link">Schema</a>
+        <a href="#styles"      class="docs-nav-link">Styles</a>
+        <a href="#catalog"     class="docs-nav-link">Catalog</a>
         <a href="/"            class="docs-back">← Studio</a>
       </nav>
     </header>
@@ -307,6 +336,90 @@ onMounted(async () => {
             aria-label="Copy schema"
             @click="copyText(SCHEMA, 'schema')"
           >{{ copiedKey === 'schema' ? '✓' : 'copy' }}</button>
+        </div>
+      </section>
+
+      <!-- Styles ─────────────────────────────────────────────── -->
+      <section id="styles" class="docs-section">
+        <h2 class="section-heading">Styles</h2>
+        <p class="section-desc">
+          Every endpoint accepts a <code class="inline-code">style</code> parameter.
+          Two treatments are available — same seed, same sky archetype, different rendering.
+        </p>
+
+        <div class="style-grid">
+          <div class="style-card">
+            <div class="style-swatch" :style="{ background: vividCss }" role="img" aria-label="vivid style preview">
+              <span class="style-badge">vivid</span>
+            </div>
+            <h3 class="style-name">vivid</h3>
+            <p class="style-desc-text">Saturated, painterly sky. The zenith stop gains up to +15 saturation points; stop positions compress toward the horizon — 85% of the gradient carries the warm-to-cool arc. Default treatment.</p>
+            <pre class="style-code">?style=vivid</pre>
+          </div>
+
+          <div class="style-card">
+            <div class="style-swatch" :style="{ background: veilCss }" role="img" aria-label="veil style preview">
+              <span class="style-badge">veil</span>
+            </div>
+            <h3 class="style-name">veil</h3>
+            <p class="style-desc-text">Misty, desaturated. Every stop loses 30–50 saturation points — the exact cut is derived from the seed, so it's deterministic. Reads like fog, gauze, or Sho Shibuya's newspaper surfaces.</p>
+            <pre class="style-code">?style=veil</pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Catalog ─────────────────────────────────────────────── -->
+      <section id="catalog" class="docs-section">
+        <h2 class="section-heading">Moment catalog</h2>
+        <p class="section-desc">
+          The engine selects a sky archetype — a "moment" — for each request.
+          28 moments are organized in four groups. The response always names the one picked in the <code class="inline-code">moment</code> field.
+        </p>
+
+        <div class="catalog-grid">
+          <div class="catalog-group">
+            <div class="catalog-group-head">
+              <span class="catalog-tag catalog-tag--core">Core sky</span>
+              <span class="catalog-count">10 moments</span>
+            </div>
+            <p class="catalog-group-desc">The full arc of a day — pre-dawn blue through golden hour to overcast grey. Weighted 2–3× so everyday requests draw from the full sky range.</p>
+            <ul class="moment-list" role="list">
+              <li v-for="m in coreMoments" :key="m" class="moment-item">{{ m }}</li>
+            </ul>
+          </div>
+
+          <div class="catalog-group">
+            <div class="catalog-group-head">
+              <span class="catalog-tag catalog-tag--nuevo">Nuevo.tokyo</span>
+              <span class="catalog-count">5 moments</span>
+            </div>
+            <p class="catalog-group-desc">Soft pastels and city-pop nostalgia — desaturated peach, muted lavender, faded coral. The hazy sky above a summer city seen through a train window.</p>
+            <ul class="moment-list" role="list">
+              <li v-for="m in nuevoMoments" :key="m" class="moment-item">{{ m }}</li>
+            </ul>
+          </div>
+
+          <div class="catalog-group">
+            <div class="catalog-group-head">
+              <span class="catalog-tag catalog-tag--sho">Sho Shibuya</span>
+              <span class="catalog-count">5 moments</span>
+            </div>
+            <p class="catalog-group-desc">Moody, restrained Tokyo. Smog-filtered mornings, rain-grey overcast, wet midnight streets. Sky reduced to its emotional minimum — pigment without saturation.</p>
+            <ul class="moment-list" role="list">
+              <li v-for="m in shoMoments" :key="m" class="moment-item">{{ m }}</li>
+            </ul>
+          </div>
+
+          <div class="catalog-group">
+            <div class="catalog-group-head">
+              <span class="catalog-tag catalog-tag--nippon">Nippon Colors</span>
+              <span class="catalog-count">8 moments</span>
+            </div>
+            <p class="catalog-group-desc">Named after traditional Japanese pigments — asagi (浅葱), fuji (藤), gunjou (群青). Precise, evocative hue vocabulary drawn from the classical color canon.</p>
+            <ul class="moment-list" role="list">
+              <li v-for="m in nipponMoments" :key="m" class="moment-item">{{ m }}</li>
+            </ul>
+          </div>
         </div>
       </section>
 
@@ -802,6 +915,160 @@ onMounted(async () => {
   border-radius: var(--radius-md);
 }
 
+/* ── Style comparison grid ────────────────────────────────────── */
+.style-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s5);
+}
+
+.style-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s3);
+}
+
+.style-swatch {
+  position: relative;
+  height: 200px;
+  border-radius: var(--radius-xl);
+  border: 1px solid oklch(1 0 0 / 0.08);
+  overflow: hidden;
+  flex-shrink: 0;
+  transition: opacity 0.9s ease;
+}
+
+.style-badge {
+  position: absolute;
+  bottom: var(--s3);
+  left: var(--s4);
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: oklch(1 0 0 / 0.82);
+  text-shadow: 0 1px 6px oklch(0 0 0 / 0.55);
+}
+
+.style-name {
+  font-family: var(--font-ui);
+  font-size: var(--text-base);
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+}
+
+.style-desc-text {
+  font-size: var(--text-sm);
+  color: var(--color-ink-2);
+  line-height: 1.75;
+}
+
+.style-code {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: oklch(0.72 0.022 220);
+  background: oklch(0.10 0.012 250);
+  border: 1px solid oklch(1 0 0 / 0.06);
+  border-radius: var(--radius-md);
+  padding: var(--s2) var(--s3);
+  white-space: pre;
+  overflow-x: auto;
+}
+
+/* ── Catalog grid ─────────────────────────────────────────────── */
+.catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s4);
+}
+
+.catalog-group {
+  background: var(--glass-bg-panel);
+  border: 1px solid oklch(1 0 0 / 0.08);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-glass-panel);
+  backdrop-filter: blur(32px) saturate(165%);
+  padding: var(--s5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s3);
+}
+
+.catalog-group-head {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+}
+
+.catalog-tag {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: 400;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: var(--radius-md);
+}
+
+.catalog-tag--core {
+  color: oklch(0.76 0.10 220);
+  background: oklch(0.76 0.10 220 / 0.10);
+  border: 1px solid oklch(0.76 0.10 220 / 0.22);
+}
+
+.catalog-tag--nuevo {
+  color: oklch(0.80 0.11 330);
+  background: oklch(0.80 0.11 330 / 0.10);
+  border: 1px solid oklch(0.80 0.11 330 / 0.22);
+}
+
+.catalog-tag--sho {
+  color: oklch(0.70 0.035 240);
+  background: oklch(0.70 0.035 240 / 0.10);
+  border: 1px solid oklch(0.70 0.035 240 / 0.22);
+}
+
+.catalog-tag--nippon {
+  color: oklch(0.76 0.10 45);
+  background: oklch(0.76 0.10 45 / 0.10);
+  border: 1px solid oklch(0.76 0.10 45 / 0.22);
+}
+
+.catalog-count {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-ink-4);
+  letter-spacing: 0.04em;
+}
+
+.catalog-group-desc {
+  font-size: var(--text-xs);
+  color: var(--color-ink-2);
+  line-height: 1.7;
+}
+
+.moment-list {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+  margin-top: var(--s1);
+}
+
+.moment-item {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--color-ink-3);
+  background: oklch(1 0 0 / 0.04);
+  border: 1px solid oklch(1 0 0 / 0.07);
+  border-radius: var(--radius-md);
+  padding: 2px 8px;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
 /* ── Footer ───────────────────────────────────────────────────── */
 .docs-footer {
   border-top: 1px solid oklch(1 0 0 / 0.07);
@@ -842,6 +1109,8 @@ onMounted(async () => {
   .ep-card          { padding: var(--s4); }
   .hide-sm          { display: none; }
   .docs-footer      { padding: var(--s4); }
+  .style-grid       { grid-template-columns: 1fr; }
+  .catalog-grid     { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 480px) {
