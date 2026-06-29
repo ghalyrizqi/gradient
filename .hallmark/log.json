@@ -1,5 +1,14 @@
 [
   {
+    "date": "2026-06-29",
+    "macrostructure": "Marquee Hero",
+    "theme": "custom",
+    "theme_axes": "dark / serif-roman / cool",
+    "vibe": "cinematic sky, Ditther-inspired full-bleed hero",
+    "enrichment": "none — live gradient from API",
+    "brief": "Small Window landing page — Marquee Hero, live gradient hero bg, How-It-Works steps, stacked endpoint cards, N9 nav, Ft5 footer"
+  },
+  {
     "date": "2026-06-23",
     "macrostructure": "Split Studio",
     "theme": "custom",
