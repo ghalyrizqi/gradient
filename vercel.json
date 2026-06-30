@@ -1,8 +1,15 @@
 {
+  "trailingSlash": false,
+  "redirects": [
+    { "source": "/index.html",     "destination": "/",         "permanent": true },
+    { "source": "/studio.html",    "destination": "/studio",   "permanent": true },
+    { "source": "/docs.html",      "destination": "/docs",     "permanent": true },
+    { "source": "/marketing.html", "destination": "/showcase", "permanent": true }
+  ],
   "rewrites": [
     { "source": "/docs",     "destination": "/docs.html" },
-    { "source": "/studio",   "destination": "/index.html" },
+    { "source": "/studio",   "destination": "/studio.html" },
     { "source": "/showcase", "destination": "/marketing.html" },
-    { "source": "/((?!api/).*)", "destination": "/landing.html" }
+    { "source": "/((?!api/).*)", "destination": "/index.html" }
   ]
 }
