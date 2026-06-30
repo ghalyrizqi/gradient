@@ -1,7 +1,8 @@
 {
   "rewrites": [
-    { "source": "/docs",    "destination": "/docs.html" },
-    { "source": "/studio",  "destination": "/index.html" },
+    { "source": "/docs",     "destination": "/docs.html" },
+    { "source": "/studio",   "destination": "/index.html" },
+    { "source": "/showcase", "destination": "/marketing.html" },
     { "source": "/((?!api/).*)", "destination": "/landing.html" }
   ]
 }

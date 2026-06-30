@@ -1,3 +1,4 @@
+<!-- Handoff: studio.dc.html · dark warm paper · IBM Plex Mono · top bar + split canvas -->
 <script setup lang="ts">
 import { ref, nextTick } from 'vue';
 import { useGradient } from './composables/useGradient';
@@ -8,10 +9,9 @@ import PhoneWallpaperView from './components/PhoneWallpaperView.vue';
 const { state, loading, resolve } = useGradient();
 const displayMode = ref<'window' | 'phone'>('window');
 
-interface ControlsExpose { updateColor: (hex: string) => void }
+interface ControlsExpose { updateColor: (hex: string) => void; randomize: () => void }
 const controlsRef = ref<ControlsExpose | null>(null);
 
-// Initialised to Controls.vue defaults — keeps view/mode switches from looking like changes.
 let _prev = {
   inputMode:   'color' as string,
   query:       '',
@@ -52,23 +52,20 @@ async function onControlChange(controls: ControlState) {
 
   if (controls.inputMode === 'custom') {
     await resolve({
-      mode:        'custom',
-      customStops: controls.customStops,
+      mode:          'custom',
+      customStops:   controls.customStops,
       styleOverride: controls.style,
-      composition: controls.composition,
+      composition:   controls.composition,
     });
   } else if (controls.inputMode === 'text' && q.length > 0) {
     await resolve({ mode: 'text', text: q, styleOverride: controls.style });
   } else {
-    // Color mode, OR text mode with no query (style-only change falls through here).
     await resolve({
-      mode: 'color',
-      color: controls.color,
+      mode:          'color',
+      color:         controls.color,
       styleOverride: controls.style,
-      shuffleSeed: controls.shuffleSeed,
+      shuffleSeed:   controls.shuffleSeed,
     });
-    // Feed the gradient's zenith color back to the swatch and keep _prev in sync
-    // so the feedback update doesn't look like a new color change on the next emit.
     const hex = state.paletteHex;
     if (hex) {
       await nextTick();
@@ -77,141 +74,163 @@ async function onControlChange(controls: ControlState) {
     }
   }
 }
+
+function handleRandom() {
+  controlsRef.value?.randomize();
+}
 </script>
 
 <template>
   <div class="studio">
 
-    <!-- Left: sky canvas -->
-    <div class="studio-canvas" :class="{ 'studio-canvas--loading': loading }">
-      <WindowView v-if="displayMode === 'window'" :state="state" />
-      <PhoneWallpaperView v-else :state="state" />
+    <!-- Top bar -->
+    <header class="studio-topbar">
+      <a href="/" class="studio-topbar__brand">
+        <span class="studio-topbar__mark"></span>
+        <span class="studio-topbar__name">gradient</span>
+      </a>
+      <span class="g-label studio-topbar__page">Studio</span>
+      <div class="studio-topbar__actions">
+        <span v-if="loading" class="studio-topbar__busy" aria-live="polite" aria-label="loading">·</span>
+        <a href="/docs"  class="g-btn g-btn--ghost g-btn--sm">API</a>
+        <button class="g-btn g-btn--outline g-btn--sm" @click="handleRandom">↻ Random</button>
+      </div>
+    </header>
+
+    <!-- Main split: canvas + panel -->
+    <div class="studio-body">
+
+      <!-- Left: gradient canvas -->
+      <div class="studio-canvas" :class="{ 'studio-canvas--loading': loading }">
+        <WindowView       v-if="displayMode === 'window'" :state="state" />
+        <PhoneWallpaperView v-else                          :state="state" />
+      </div>
+
+      <!-- Right: instrument panel -->
+      <aside class="studio-panel">
+        <Controls ref="controlsRef" @change="onControlChange" />
+      </aside>
+
     </div>
-
-    <!-- Right: instrument panel -->
-    <aside class="studio-panel">
-      <header class="panel-head">
-        <span class="panel-wordmark">Small Window</span>
-        <div class="panel-head-right">
-          <span v-if="loading" class="panel-busy" aria-live="polite" aria-label="loading">·</span>
-          <a href="/docs" class="panel-api-link">API</a>
-        </div>
-      </header>
-      <Controls ref="controlsRef" @change="onControlChange" />
-    </aside>
-
   </div>
 </template>
 
 <style scoped>
-/* ── Split Studio layout ─────────────────────────────────────────────
-   Canvas pane (left, flexible) + instrument panel (right, fixed).
-   The canvas is the primary surface; the panel serves it.           */
+/* ── Studio wrapper ──────────────────────────────────────────────────── */
 .studio {
-  display: grid;
-  grid-template-columns: 1fr minmax(320px, 380px);
-  min-height: 100vh;
-  background:
-    radial-gradient(ellipse 70% 60% at 8% 88%, oklch(0.17 0.042 250 / 0.50) 0%, transparent 52%),
-    radial-gradient(ellipse 55% 48% at 88% 12%, oklch(0.15 0.052 262 / 0.40) 0%, transparent 48%),
-    var(--color-paper);
-}
-
-/* ── Canvas pane ─────────────────────────────────────────────────── */
-.studio-canvas {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--s5);
-  min-height: 100vh;
-  transition: opacity 0.25s var(--ease-out);
-}
-
-.studio-canvas--loading { opacity: 0.45; pointer-events: none; }
-
-/* ── Instrument panel ────────────────────────────────────────────── */
-.studio-panel {
-  margin: var(--s4) var(--s4) var(--s4) 0;
-  background: var(--glass-bg-panel);
-  border: 1px solid oklch(1 0 0 / 0.09);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-glass-lg);
-  backdrop-filter: blur(36px) saturate(175%);
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - var(--s6));
-  max-height: calc(100vh - var(--s6));
-  overflow-y: auto;
+  height: 100vh;
+  background: var(--paper-bg);
+  overflow: hidden;
 }
 
-.panel-head {
+/* ── Top bar ─────────────────────────────────────────────────────────── */
+.studio-topbar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: var(--s4) var(--s5);
-  border-bottom: 1px solid oklch(1 0 0 / 0.07);
+  gap: 16px;
+  padding: 0 clamp(16px, 3vw, 28px);
+  height: 52px;
+  border-bottom: 1px solid var(--paper-line);
+  background: var(--paper-raised);
   flex-shrink: 0;
 }
-
-.panel-head-right {
+.studio-topbar__brand {
   display: flex;
   align-items: center;
-  gap: var(--s3);
+  gap: 9px;
+  text-decoration: none;
+  color: var(--ink-900);
+  flex-shrink: 0;
 }
-
-.panel-wordmark {
-  font-family: var(--font-ui);
-  font-size: var(--text-xs);
-  font-weight: 400;
-  letter-spacing: 0;
-  text-transform: uppercase;
-  color: var(--color-ink-2);
-  user-select: none;
+.studio-topbar__mark {
+  width: 16px; height: 16px;
+  border-radius: 3px;
+  background: var(--sunrise);
+  flex-shrink: 0;
 }
-
-.panel-busy {
-  font-family: var(--font-ui);
-  font-size: var(--text-md);
-  color: var(--color-accent);
+.studio-topbar__name {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: -0.01em;
+}
+.studio-topbar__page {
+  color: var(--ink-300);
+  flex-shrink: 0;
+}
+.studio-topbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+.studio-topbar__busy {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  color: var(--clay);
   line-height: 1;
-  animation: blink 1s step-end infinite;
+  animation: topbar-blink 1s step-end infinite;
 }
-
-@keyframes blink {
+@keyframes topbar-blink {
   0%, 100% { opacity: 1; }
   50%       { opacity: 0; }
 }
 
-.panel-api-link {
-  font-family: var(--font-ui);
-  font-size: var(--text-xs);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  text-decoration: none;
-  color: var(--color-ink-3);
-  transition: color 120ms;
+/* ── Body split ──────────────────────────────────────────────────────── */
+.studio-body {
+  display: grid;
+  grid-template-columns: 1fr minmax(320px, 360px);
+  flex: 1;
+  overflow: hidden;
 }
-.panel-api-link:hover { color: var(--color-accent); }
 
-/* ── Mobile: single column ───────────────────────────────────────── */
+/* ── Canvas pane ─────────────────────────────────────────────────────── */
+.studio-canvas {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-5);
+  background:
+    radial-gradient(ellipse 70% 60% at 8% 88%, oklch(0.70 0.075 40 / 0.10) 0%, transparent 52%),
+    radial-gradient(ellipse 55% 48% at 88% 12%, oklch(0.70 0.065 150 / 0.08) 0%, transparent 48%),
+    var(--paper-bg);
+  overflow: hidden;
+  transition: opacity 0.25s var(--ease-out);
+}
+.studio-canvas--loading { opacity: 0.45; pointer-events: none; }
+
+/* ── Instrument panel ────────────────────────────────────────────────── */
+.studio-panel {
+  border-left: 1px solid var(--paper-line);
+  background: var(--paper-sunken);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+/* ── Mobile ──────────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .studio {
+    height: auto;
+    min-height: 100vh;
+    overflow: auto;
+  }
+  .studio-body {
     grid-template-columns: 1fr;
     grid-template-rows: auto 1fr;
+    overflow: visible;
   }
   .studio-canvas {
     min-height: 55vw;
-    padding: var(--s4);
+    padding: var(--space-4);
   }
   .studio-panel {
-    margin: 0;
     border-left: none;
-    border-right: none;
-    border-bottom: none;
-    border-top: 1px solid oklch(1 0 0 / 0.09);
-    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-    min-height: auto;
-    max-height: none;
+    border-top: 1px solid var(--paper-line);
+    overflow-y: visible;
   }
+  .studio-topbar__actions .g-btn--outline { display: none; }
 }
 </style>

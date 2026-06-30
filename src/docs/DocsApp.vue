@@ -1,6 +1,6 @@
 <!-- Hallmark · pre-emit critique: P5 H5 E5 S5 R5 V4 -->
 <!-- Hallmark · macrostructure: Long Document · tone: atmospheric glass
-     · genre: atmospheric · anchor hue: sora-blue oklch(0.76 0.10 220)
+     · genre: atmospheric · anchor hue: sora-blue var(--clay)
      · theme: custom (DM Mono + DM Sans · OKLCH paper-dark system)
      Hero = live gradient canvas from seed endpoint · no re-drawn chrome
      Quick Start → Endpoints → Schema → Integration → Footer
@@ -495,7 +495,7 @@ onMounted(async () => {
   justify-content: space-between;
   gap: var(--s4);
   padding: var(--s3) var(--s6);
-  background: oklch(0.11 0.010 250 / 0.82);
+  background: oklch(0.155 0.008 60 / 0.82);
   border-bottom: 1px solid oklch(1 0 0 / 0.07);
   backdrop-filter: blur(36px) saturate(175%);
 }
@@ -573,7 +573,7 @@ onMounted(async () => {
   padding: var(--s8) var(--s6) var(--s7);
   background: linear-gradient(to top,
     var(--color-paper) 0%,
-    oklch(0.11 0.010 250 / 0.88) 28%,
+    oklch(0.155 0.008 60 / 0.88) 28%,
     transparent 100%);
 }
 
@@ -708,9 +708,9 @@ onMounted(async () => {
   letter-spacing: 0.08em;
   padding: 2px 7px;
   border-radius: var(--radius-md);
-  background: oklch(0.76 0.10 220 / 0.15);
+  background: var(--clay-tint);
   color: var(--color-accent);
-  border: 1px solid oklch(0.76 0.10 220 / 0.22);
+  border: 1px solid oklch(0.70 0.075 40 / 0.22);
   flex-shrink: 0;
 }
 
@@ -812,8 +812,8 @@ onMounted(async () => {
   font-family: var(--font-ui);
   font-size: var(--text-sm);
   line-height: 1.65;
-  color: oklch(0.72 0.022 220);
-  background: oklch(0.10 0.012 250);
+  color: var(--clay);
+  background: oklch(0.125 0.008 60);
   border: 1px solid oklch(1 0 0 / 0.06);
   border-radius: var(--radius-lg);
   padding: var(--s4) var(--s5);
@@ -830,14 +830,14 @@ onMounted(async () => {
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--color-ink-3);
-  background: oklch(0.18 0.016 245 / 0.85);
+  background: oklch(0.205 0.009 60 / 0.85);
   border: 1px solid oklch(1 0 0 / 0.08);
   border-radius: var(--radius-md);
   padding: 2px 8px;
   cursor: pointer;
   transition: color 120ms, background 120ms;
 }
-.copy-btn:hover { color: var(--color-ink); background: oklch(0.24 0.016 245 / 0.95); }
+.copy-btn:hover { color: var(--color-ink); background: oklch(0.24 0.009 60 / 0.95); }
 .copy-btn--done { color: oklch(0.72 0.14 145); }
 .copy-btn:focus-visible { outline: 1.5px solid var(--color-focus); outline-offset: 2px; }
 
@@ -851,14 +851,14 @@ onMounted(async () => {
   font-family: var(--font-ui);
   font-size: var(--text-xs);
   letter-spacing: 0.06em;
-  border: 1px solid oklch(0.76 0.10 220 / 0.30);
+  border: 1px solid oklch(0.70 0.075 40 / 0.30);
   border-radius: var(--radius-md);
-  background: oklch(0.76 0.10 220 / 0.10);
+  background: var(--clay-tint);
   color: var(--color-accent);
   cursor: pointer;
   transition: background 120ms, border-color 120ms;
 }
-.try-btn:hover { background: oklch(0.76 0.10 220 / 0.18); border-color: oklch(0.76 0.10 220 / 0.45); }
+.try-btn:hover { background: oklch(0.70 0.075 40 / 0.18); border-color: oklch(0.70 0.075 40 / 0.45); }
 .try-btn--loading { opacity: 0.5; pointer-events: none; }
 .try-btn:focus-visible { outline: 1.5px solid var(--color-focus); outline-offset: 2px; }
 
@@ -898,7 +898,7 @@ onMounted(async () => {
 /* ── Integration ──────────────────────────────────────────────── */
 .integration-note {
   padding: var(--s4) var(--s5);
-  background: oklch(0.16 0.018 245 / 0.45);
+  background: oklch(0.155 0.008 60 / 0.45);
   border: 1px solid oklch(1 0 0 / 0.06);
   border-radius: var(--radius-lg);
   font-size: var(--text-sm);
@@ -968,8 +968,8 @@ onMounted(async () => {
 .style-code {
   font-family: var(--font-ui);
   font-size: var(--text-xs);
-  color: oklch(0.72 0.022 220);
-  background: oklch(0.10 0.012 250);
+  color: var(--clay);
+  background: oklch(0.125 0.008 60);
   border: 1px solid oklch(1 0 0 / 0.06);
   border-radius: var(--radius-md);
   padding: var(--s2) var(--s3);
@@ -1013,9 +1013,9 @@ onMounted(async () => {
 }
 
 .catalog-tag--core {
-  color: oklch(0.76 0.10 220);
-  background: oklch(0.76 0.10 220 / 0.10);
-  border: 1px solid oklch(0.76 0.10 220 / 0.22);
+  color: var(--clay);
+  background: var(--clay-tint);
+  border: 1px solid oklch(0.70 0.075 40 / 0.22);
 }
 
 .catalog-tag--nuevo {

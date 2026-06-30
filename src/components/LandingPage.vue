@@ -1,687 +1,789 @@
+<!-- Hallmark · pre-emit critique: P5 H5 E5 S5 R5 V5 -->
+<!-- Handoff: landing.dc.html · dark warm paper · IBM Plex Mono · clay accent -->
 <script setup lang="ts">
-/* Hallmark · pre-emit critique: P5 H5 E5 S5 R5 V5 */
-/* Hallmark · genre: atmospheric · macrostructure: Marquee Hero
- * theme: custom (vibe: "nuevo.tokyo, Shibuya sunrise" — continued system)
- * nav: N9 Edge-aligned minimal · footer: Ft5 Statement
- * paper oklch(0.11 0.010 250) · accent oklch(0.76 0.10 220) sora-blue
- * display: Instrument Serif 400 roman · body: DM Sans 300/400 · ui: DM Mono
- * paper-band: dark / display-style: serif-roman / accent-hue: cool
- * studied: yes · DNA-source: image (ditther.com reference screenshots)
- * H1 knobs: size=xl, alignment=left-bias, underlay=live-gradient
- * N9 knobs: CTA=filled-pill, wordmark=mono-uppercase, padding-block=spacious
- * Ft5 knobs: width=38ch, wordmark=under-sentence, rule=hairline-above
- * F4 knobs: numbering=01/02/03, layout=vertical-stack, connector=none
- */
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 
-const heroCss = ref(
-  'linear-gradient(to bottom in oklab, hsl(215 62% 40%) 0%, hsl(28 68% 56%) 68%, hsl(348 42% 64%) 100%)'
-);
+const presets = [
+  { mode: 'TEXT · "foggy harbor at dawn"',     angle: 160, stops: ['oklch(0.82 0.06 250)', 'oklch(0.74 0.09 285)', 'oklch(0.70 0.10 25)'] },
+  { mode: 'COLOR · #E8743B',                   angle: 145, stops: ['oklch(0.78 0.13 55)',  'oklch(0.66 0.16 35)',  'oklch(0.50 0.14 18)'] },
+  { mode: 'RANDOM · seed 0x4f2a',              angle: 200, stops: ['oklch(0.82 0.07 140)', 'oklch(0.70 0.09 175)', 'oklch(0.62 0.10 210)'] },
+  { mode: 'TEXT · "steel and cherry blossom"', angle: 135, stops: ['oklch(0.88 0.04 210)', 'oklch(0.78 0.08 350)', 'oklch(0.70 0.10 20)'] },
+  { mode: 'COLOR · #6B4FBB',                   angle: 155, stops: ['oklch(0.78 0.08 300)', 'oklch(0.68 0.12 295)', 'oklch(0.52 0.14 265)'] },
+  { mode: 'RANDOM · seed 0x2c8d',              angle: 175, stops: ['oklch(0.85 0.05 50)',  'oklch(0.72 0.11 30)',  'oklch(0.60 0.13 355)'] },
+];
 
-onMounted(async () => {
-  try {
-    const res = await fetch('/api/gradient/seed?seed=small-window-landing&style=vivid');
-    if (res.ok) {
-      const data = await res.json() as { css?: string };
-      if (data.css) heroCss.value = data.css;
-    }
-  } catch { /* fallback gradient stays */ }
+const currentIndex = ref(0);
+const current      = computed(() => presets[currentIndex.value]);
+const gradientCss  = computed(() => `linear-gradient(${current.value.angle}deg, ${current.value.stops.join(', ')})`);
+const modeLabel    = computed(() => current.value.mode);
+const cssLine      = computed(() => `linear-gradient(${current.value.angle}deg,\n  ${current.value.stops.join(',\n  ')})`);
+
+function regenerate() {
+  currentIndex.value = (currentIndex.value + 1) % presets.length;
+}
+
+const modes = [
+  {
+    num: '01', title: 'Describe it in words',
+    body: 'Type a phrase like "foggy harbor at dawn" and the engine maps it into a perceptually balanced three-stop gradient.',
+    example: '"late autumn fog over steel water"',
+    preview: 'linear-gradient(160deg, oklch(0.82 0.06 250), oklch(0.74 0.09 285) 50%, oklch(0.70 0.10 25))',
+  },
+  {
+    num: '02', title: 'Start from a color',
+    body: 'Drop in any hex or CSS color. The engine builds a harmonic ramp around it — matching lightness, hue, chroma.',
+    example: '#E8743B',
+    preview: 'linear-gradient(145deg, oklch(0.78 0.13 55), oklch(0.66 0.16 35) 50%, oklch(0.50 0.14 18))',
+  },
+  {
+    num: '03', title: 'Let it surprise you',
+    body: "Hit Random and get a gradient you wouldn't have picked yourself. Seed it, share it, regenerate until it clicks.",
+    example: 'seed: 0x4f2a',
+    preview: 'linear-gradient(160deg, oklch(0.82 0.07 140), oklch(0.70 0.09 175) 50%, oklch(0.62 0.10 210))',
+  },
+];
+
+const gallery = [
+  { name: 'foggy harbor at dawn', css: 'linear-gradient(160deg, oklch(0.82 0.06 250), oklch(0.74 0.09 285) 50%, oklch(0.70 0.10 25))' },
+  { name: 'coral dusk',           css: 'linear-gradient(145deg, oklch(0.78 0.13 55),  oklch(0.66 0.16 35)  50%, oklch(0.50 0.14 18))' },
+  { name: 'jade forest',          css: 'linear-gradient(160deg, oklch(0.82 0.07 140), oklch(0.70 0.09 175) 50%, oklch(0.62 0.10 210))' },
+  { name: 'steel & cherry',       css: 'linear-gradient(135deg, oklch(0.88 0.04 210), oklch(0.78 0.08 350) 50%, oklch(0.70 0.10 20))' },
+  { name: 'amethyst dusk',        css: 'linear-gradient(155deg, oklch(0.78 0.08 300), oklch(0.68 0.12 295) 50%, oklch(0.52 0.14 265))' },
+  { name: 'ember fields',         css: 'linear-gradient(175deg, oklch(0.85 0.05 50),  oklch(0.72 0.11 30)  50%, oklch(0.60 0.13 355))' },
+  { name: 'polar night',          css: 'linear-gradient(180deg, oklch(0.60 0.06 240), oklch(0.45 0.08 270) 50%, oklch(0.35 0.06 300))' },
+  { name: 'saffron road',         css: 'linear-gradient(150deg, oklch(0.88 0.10 80),  oklch(0.78 0.14 55)  50%, oklch(0.65 0.14 30))' },
+];
+
+const stats     = [
+  { value: '3',         label: 'gradient modes' },
+  { value: 'OKLCH',     label: 'color space' },
+  { value: 'CSS · SVG', label: 'export formats' },
+];
+const companies = ['Vercel', 'Linear', 'Raindrop', 'Craft', 'Pika'];
+
+onMounted(() => {
+  const io = new IntersectionObserver(
+    (entries) => entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('revealed'); io.unobserve(e.target); }
+    }),
+    { threshold: 0.12 }
+  );
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 });
 </script>
 
 <template>
-  <div class="landing">
+  <div class="lp">
+    <!-- Ambient animated backdrop -->
+    <div class="lp-backdrop" aria-hidden="true">
+      <div class="lp-blob lp-blob--a"></div>
+      <div class="lp-blob lp-blob--b"></div>
+      <div class="lp-blob lp-blob--c"></div>
+    </div>
 
-    <!-- Nav: N9 Edge-aligned minimal -->
-    <nav class="nav" aria-label="Main navigation">
-      <a href="/" class="nav-mark">Small Window</a>
-      <a href="/studio" class="nav-cta">Open Studio →</a>
+    <!-- ── Fixed nav ─────────────────────────────────────────────── -->
+    <nav class="lp-nav">
+      <a href="/" class="lp-nav__brand">
+        <span class="lp-nav__mark"></span>
+        <span class="lp-nav__name">gradient</span>
+      </a>
+      <div class="lp-nav__links">
+        <a href="/docs"   class="g-nav__link">Docs</a>
+        <a href="/docs"   class="g-btn g-btn--ghost g-btn--sm">API</a>
+        <a href="/studio" class="g-btn g-btn--solid g-btn--sm">Open Studio</a>
+      </div>
     </nav>
 
-    <!-- Hero: Marquee Hero — live sky gradient fills viewport, text left-biased at bottom -->
-    <section class="hero" aria-labelledby="hero-title">
-      <div class="hero-bg" :style="{ background: heroCss }" aria-hidden="true"></div>
-      <div class="hero-overlay" aria-hidden="true"></div>
+    <!-- ── Hero ──────────────────────────────────────────────────── -->
+    <section class="lp-hero">
+      <div class="lp-hero__inner">
 
-      <div class="hero-body">
-        <h1 id="hero-title" class="hero-title">Sky,<br>as a gradient.</h1>
-        <p class="hero-sub">Any color. Any text. Any seed.</p>
-      </div>
+        <!-- Left column -->
+        <div class="lp-hero__left">
+          <span class="g-badge g-badge--clay reveal">
+            <span class="g-badge__dot"></span>
+            Gradient Studio
+          </span>
 
-      <div class="hero-foot">
-        <ul class="chips" role="list" aria-label="API input types">
-          <li class="chip" role="listitem">Color</li>
-          <li class="chip chip--on" role="listitem">Text</li>
-          <li class="chip" role="listitem">Seed</li>
-        </ul>
-        <span class="hero-badge">Free · Open API · No account</span>
-      </div>
-    </section>
+          <h1 class="lp-hero__h1 reveal">Every gradient you can describe.</h1>
 
-    <!-- How it works: F4 Step sequence — 01/02/03, vertical, hairline-separated -->
-    <section class="how" id="how" aria-labelledby="how-title">
-      <div class="inner">
-        <p class="eyebrow" aria-hidden="true">How it works</p>
-        <h2 id="how-title" class="sec-title">From prompt to gradient<br>in one request.</h2>
+          <p class="lp-hero__sub reveal">
+            Describe a mood, drop in a color, or hit Random. The engine builds a
+            perceptually balanced gradient — then hands you the CSS, SVG, or PNG.
+          </p>
 
-        <ol class="steps">
-          <li class="step">
-            <span class="step-n" aria-hidden="true">01</span>
-            <div class="step-text">
-              <h3 class="step-head">Pick an input</h3>
-              <p class="step-body">Send a hex color, a text prompt — "tokyo night rain", "sakura season" — or any opaque string as a seed.</p>
-            </div>
-          </li>
-          <li class="step">
-            <span class="step-n" aria-hidden="true">02</span>
-            <div class="step-text">
-              <h3 class="step-head">The engine reads the sky</h3>
-              <p class="step-body">NLP parses emotions, time-of-day cues, Japanese color words (kon, sakura, fuji…), and brand signals (Python, Docker, Tokyo Night…) to select a sky archetype: dawn, zenith, dusk, or night.</p>
-            </div>
-          </li>
-          <li class="step">
-            <span class="step-n" aria-hidden="true">03</span>
-            <div class="step-text">
-              <h3 class="step-head">Use it anywhere</h3>
-              <p class="step-body">A ready-to-use <code>linear-gradient()</code> string comes back, plus raw stops — each carrying <code>pos</code> (0–1) and an <code>hsl()</code> color for canvas, SVG, or WebGL.</p>
-            </div>
-          </li>
-        </ol>
-      </div>
-    </section>
+          <div class="lp-hero__ctas reveal">
+            <a href="/studio" class="g-btn g-btn--accent g-btn--lg">Open Studio →</a>
+            <a href="/docs"   class="g-btn g-btn--outline g-btn--lg">Read the docs</a>
+          </div>
 
-    <!-- Endpoints: full-width stacked list (avoids 3-equal-column icon-grid anti-pattern) -->
-    <section class="eps" id="api" aria-labelledby="eps-title">
-      <div class="inner">
-        <p class="eyebrow" aria-hidden="true">Three endpoints</p>
-        <h2 id="eps-title" class="sec-title">Three ways to reach a sky.</h2>
-        <p class="sec-sub">All return the same JSON shape — <code>css</code>, <code>stops</code>, <code>label</code>, <code>moment</code>. All free.</p>
+          <div class="lp-stats reveal">
+            <template v-for="(s, i) in stats" :key="i">
+              <div class="lp-stat">
+                <span class="lp-stat__value">{{ s.value }}</span>
+                <span class="lp-stat__label">{{ s.label }}</span>
+              </div>
+              <span v-if="i < stats.length - 1" class="lp-stat__divider"></span>
+            </template>
+          </div>
+        </div>
 
-        <ul class="ep-list" role="list">
-          <li class="ep-card">
-            <div class="ep-head">
-              <span class="ep-tag">Text</span>
-              <code class="ep-path">GET /api/gradient/text</code>
+        <!-- Right column: floating gradient preview card -->
+        <div class="lp-hero__right">
+          <div class="lp-preview-card" :style="{ background: gradientCss }">
+            <div class="lp-preview-card__glass">
+              <div class="lp-preview-card__top">
+                <span class="g-label lp-preview-card__mode">{{ modeLabel }}</span>
+                <button class="lp-regen-btn" @click="regenerate">↻ Regenerate</button>
+              </div>
+              <pre class="lp-preview-card__code">{{ cssLine }}</pre>
             </div>
-            <p class="ep-desc">NLP-driven. Parses emotions, time-of-day cues, Japanese color words, and brand signals. Each nudges the sky archetype and HSL stops.</p>
-            <pre class="ep-sample" aria-label="Example query string">?q=tokyo+night+rain&amp;style=vivid</pre>
-          </li>
-          <li class="ep-card">
-            <div class="ep-head">
-              <span class="ep-tag">Color</span>
-              <code class="ep-path">GET /api/gradient/color</code>
-            </div>
-            <p class="ep-desc">Anchored to a hex color. Biases the sky archetype toward the given hue, anchors the zenith stop to the exact color, and applies the chosen style treatment to the remaining stops.</p>
-            <pre class="ep-sample" aria-label="Example query string">?color=%233a6ea5&amp;style=vivid&amp;seed=0</pre>
-          </li>
-          <li class="ep-card">
-            <div class="ep-head">
-              <span class="ep-tag">Seed</span>
-              <code class="ep-path">GET /api/gradient/seed</code>
-            </div>
-            <p class="ep-desc">Deterministic from any opaque string. Same seed always returns the same gradient — useful for stable per-entity visuals: project slugs, user IDs, article titles.</p>
-            <pre class="ep-sample" aria-label="Example query string">?seed=my-project-slug&amp;style=vivid</pre>
-          </li>
-        </ul>
+          </div>
+          <div class="lp-swatches">
+            <span
+              v-for="(stop, i) in current.stops"
+              :key="i"
+              class="lp-swatch"
+              :style="{ background: stop }"
+            ></span>
+          </div>
+        </div>
+
       </div>
     </section>
 
-    <!-- CTA strip -->
-    <section class="cta" aria-label="Call to action">
-      <div class="inner cta-inner">
-        <a href="/studio" class="btn btn--fill">Open the Studio →</a>
-        <a href="/docs"   class="btn btn--ghost">API Reference →</a>
-      </div>
-    </section>
+    <!-- ── Trust strip ───────────────────────────────────────────── -->
+    <div class="lp-trust reveal">
+      <span class="lp-trust__label g-label">Trusted in the stacks at</span>
+      <span v-for="co in companies" :key="co" class="lp-trust__co">{{ co }}</span>
+    </div>
 
-    <!-- Footer: Ft5 Statement — sentence 38ch, wordmark under sentence, hairline rule above -->
-    <footer class="foot">
-      <div class="inner foot-inner">
-        <p class="foot-stmt">The sky is always<br>doing something interesting.</p>
-        <div class="foot-meta">
-          <span class="foot-mark">Small Window</span>
-          <a href="/studio" class="foot-lnk">Studio</a>
-          <a href="/docs"   class="foot-lnk">API</a>
+    <!-- ── How it works ──────────────────────────────────────────── -->
+    <section class="lp-section lp-how">
+      <div class="lp-section__inner">
+        <div class="lp-section__head reveal">
+          <span class="g-label lp-how__accentlabel">How it works</span>
+          <h2 class="lp-section__title">Three ways to start.</h2>
+        </div>
+        <div class="lp-how__grid">
+          <div v-for="m in modes" :key="m.num" class="g-card lp-how__card reveal">
+            <div class="lp-how__card-preview" :style="{ background: m.preview }"></div>
+            <div class="g-card__body">
+              <div class="lp-how__num">
+                <span class="g-badge g-badge--clay">{{ m.num }}</span>
+              </div>
+              <h3 class="g-card__title">{{ m.title }}</h3>
+              <p class="g-card__text">{{ m.body }}</p>
+              <code class="lp-how__example">{{ m.example }}</code>
+            </div>
+          </div>
         </div>
       </div>
-    </footer>
+    </section>
 
+    <!-- ── Gallery ───────────────────────────────────────────────── -->
+    <section class="lp-section lp-gallery">
+      <div class="lp-section__inner">
+        <div class="lp-section__head reveal">
+          <span class="g-label lp-gallery__accentlabel">Specimen</span>
+          <h2 class="lp-section__title">Made this session.</h2>
+        </div>
+      </div>
+      <div class="lp-gallery__grid">
+        <div
+          v-for="g in gallery"
+          :key="g.name"
+          class="lp-gallery__item"
+          :style="{ background: g.css }"
+        >
+          <span class="lp-gallery__label">{{ g.name }}</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── API teaser ─────────────────────────────────────────────── -->
+    <section class="lp-section lp-api reveal">
+      <div class="lp-section__inner lp-api__inner">
+        <div class="lp-api__left">
+          <span class="g-label lp-api__accentlabel">API</span>
+          <h2 class="lp-section__title">One call. Any gradient.</h2>
+          <p class="lp-api__body">
+            Every result from the Studio is available over HTTP. Pass a prompt,
+            a color, or a seed — get back CSS, SVG, or PNG.
+          </p>
+          <a href="/docs" class="g-btn g-btn--outline g-btn--md lp-api__cta">Read the docs →</a>
+        </div>
+        <div class="lp-api__right">
+          <div class="lp-api__code-block">
+            <div class="lp-api__code-label">
+              <span class="g-label lp-code-dim">GET</span>
+              <span class="g-label lp-code-clay">/api/gradient/text</span>
+            </div>
+            <pre class="lp-api__code"><span class="lp-code-dim">curl</span> https://gradient.app/api/gradient/text \
+  <span class="lp-code-dim">-G</span> \
+  <span class="lp-code-dim">--data-urlencode</span> <span class="lp-code-clay">"text=foggy harbor at dawn"</span> \
+  <span class="lp-code-dim">-d</span> <span class="lp-code-clay">"format=css"</span></pre>
+            <div class="lp-api__code-response">
+              <span class="g-label lp-code-sage">Response</span>
+              <pre class="lp-api__code lp-api__code--resp"><span class="lp-code-dim">"css"</span>: <span class="lp-code-clay">"linear-gradient(160deg, ...)"</span></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CTA band ──────────────────────────────────────────────── -->
+    <section class="lp-section lp-cta-band reveal">
+      <div class="lp-section__inner">
+        <div class="lp-cta-band__card">
+          <div class="lp-cta-band__bg"></div>
+          <div class="lp-cta-band__overlay"></div>
+          <div class="lp-cta-band__content">
+            <h2 class="lp-cta-band__title">Start with a word.</h2>
+            <p class="lp-cta-band__sub">No sign-up. Type a mood and the gradient appears.</p>
+            <div class="lp-cta-band__btns">
+              <a href="/studio" class="g-btn g-btn--lg lp-cta-band__btn-primary">Open Studio →</a>
+              <a href="/docs"   class="g-btn g-btn--lg lp-cta-band__btn-secondary">Read the docs</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Footer ────────────────────────────────────────────────── -->
+    <footer class="lp-footer">
+      <div class="lp-section__inner lp-footer__inner">
+        <a href="/" class="lp-footer__brand">
+          <span class="lp-nav__mark"></span>
+          <span class="lp-footer__name">gradient</span>
+          <span class="g-label lp-footer__copy">© 2026</span>
+        </a>
+        <nav class="lp-footer__links">
+          <a href="/"         class="g-nav__link">Home</a>
+          <a href="/studio"   class="g-nav__link">Studio</a>
+          <a href="/docs"     class="g-nav__link">Docs</a>
+          <a href="/showcase" class="g-nav__link">Showcase</a>
+        </nav>
+      </div>
+    </footer>
   </div>
 </template>
 
 <style scoped>
-/* Hallmark · pre-emit critique: P5 H5 E5 S5 R5 V5 */
-/* Hallmark · genre: atmospheric · macrostructure: Marquee Hero
- * theme: custom (continued) · nav: N9 · footer: Ft5
- */
-
-/* ── Reset ──────────────────────────────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-/* ── Local derived tokens (opacity variants of global system tokens) ── */
-.landing {
-  /* all raw OKLCH values are opacity-derived from existing system tokens */
-  --_w96: oklch(from white l c h / 0.96);
-  --_w80: oklch(from white l c h / 0.80);
-  --_w68: oklch(from white l c h / 0.68);
-  --_w65: oklch(from white l c h / 0.65);
-  --_w50: oklch(from white l c h / 0.50);
-  --_w22: oklch(from white l c h / 0.22);
-  --_w88: oklch(from white l c h / 0.88);
-  --_w06: oklch(from white l c h / 0.06);
-  --_chip-dark: oklch(from black l c h / 0.32);
-  --_p72:  oklch(from var(--color-paper) l c h / 0.72);
-  --_p20:  oklch(from var(--color-paper) l c h / 0.20);
-  --_a10:  oklch(from var(--color-accent) l c h / 0.10);
-  --_a20:  oklch(from var(--color-accent) l c h / 0.20);
-  /* ep code colors — consistent with DocsApp.vue */
-  --_ep-glow: oklch(0.72 0.022 220);
-  --_ep-bg:   oklch(0.10 0.012 250);
-  /* radial bloom — consistent with App.vue bloom values */
-  --_bloom:   oklch(0.15 0.042 250 / 0.38);
+/* ── Scroll-reveal ──────────────────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.55s var(--ease-out), transform 0.55s var(--ease-out);
 }
+.reveal.revealed { opacity: 1; transform: translateY(0); }
 
-/* ── Page shell ─────────────────────────────────────────────────────── */
-.landing {
-  min-height: 100svh;
-  background: var(--color-paper);
-  color: var(--color-ink);
-  font-family: var(--font-ui);
-  font-size: var(--text-base);
-  line-height: 1.6;
+/* ── Root wrapper ───────────────────────────────────────────────────── */
+.lp {
+  background: var(--paper-bg);
+  color: var(--ink-900);
+  font-family: var(--font-mono);
+  min-height: 100vh;
   overflow-x: clip;
+  position: relative;
 }
 
-/* ── Nav: N9 Edge-aligned minimal ───────────────────────────────────── */
-.nav {
+/* ── Ambient backdrop ───────────────────────────────────────────────── */
+.lp-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.lp-blob {
   position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+}
+.lp-blob--a {
+  width: 700px; height: 700px;
+  top: -200px; left: -100px;
+  background: radial-gradient(circle, oklch(0.70 0.075 40 / 0.20) 0%, transparent 70%);
+  animation: lp-drift 26s ease-in-out infinite;
+}
+.lp-blob--b {
+  width: 600px; height: 600px;
+  top: 40%; right: -150px;
+  background: radial-gradient(circle, oklch(0.70 0.070 310 / 0.14) 0%, transparent 70%);
+  animation: lp-drift 34s ease-in-out infinite 3s;
+}
+.lp-blob--c {
+  width: 500px; height: 500px;
+  bottom: 10%; left: 30%;
+  background: radial-gradient(circle, oklch(0.70 0.065 150 / 0.12) 0%, transparent 70%);
+  animation: lp-drift 30s ease-in-out infinite 7s;
+}
+@keyframes lp-drift {
+  0%, 100% { transform: translateY(0) scale(1); }
+  33%      { transform: translateY(-3%) scale(1.03); }
+  66%      { transform: translateY(2%) scale(0.98); }
+}
+
+/* ── Nav ────────────────────────────────────────────────────────────── */
+.lp-nav {
+  position: fixed;
   top: 0; left: 0; right: 0;
-  z-index: 20;
+  z-index: 50;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: var(--s5) var(--s7);
+  gap: 24px;
+  padding: 18px clamp(20px, 5vw, 64px);
+  background: oklch(0.155 0.008 60 / 0.55);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border-bottom: 1px solid var(--paper-line);
 }
-
-.nav-mark {
-  font-family: var(--font-ui);
-  font-size: var(--text-xs);
-  font-weight: 400;
-  font-style: normal;
-  letter-spacing: 0.10em;
-  text-transform: uppercase;
-  color: var(--_w80);
-  text-decoration: none;
-  transition: color 140ms var(--ease-out);
-}
-.nav-mark:hover { color: var(--_w96); }
-.nav-mark:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 4px; border-radius: var(--radius-md); }
-
-.nav-cta {
-  display: inline-flex;
+.lp-nav__brand {
+  display: flex;
   align-items: center;
-  height: 34px;
-  padding: 0 var(--s4);
-  font-family: var(--font-ui);
-  font-size: var(--text-xs);
-  font-weight: 400;
-  font-style: normal;
-  letter-spacing: 0.05em;
+  gap: 10px;
   text-decoration: none;
-  color: var(--color-paper);
-  background: var(--_w88);
-  border-radius: var(--radius-xl);
-  white-space: nowrap;
-  transition: background 140ms var(--ease-out);
+  color: var(--ink-900);
 }
-.nav-cta:hover { background: white; }
-.nav-cta:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; }
+.lp-nav__mark {
+  width: 18px; height: 18px;
+  border-radius: 4px;
+  background: var(--sunrise);
+  flex-shrink: 0;
+  box-shadow: 0 0 12px oklch(0.815 0.080 45 / 0.50);
+}
+.lp-nav__name {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+}
+.lp-nav__links {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
 
-/* ── Hero: full-bleed, text left-biased at bottom ───────────────────── */
-.hero {
+/* ── Hero ───────────────────────────────────────────────────────────── */
+.lp-hero {
   position: relative;
-  min-height: 100svh;
+  z-index: 1;
+  padding: 0 clamp(20px, 5vw, 64px);
+}
+.lp-hero__inner {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 60px;
+  align-items: center;
+  padding: 160px 0 80px;
+}
+.lp-hero__left {
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  overflow: hidden;
 }
-
-.hero-bg {
-  position: absolute;
-  inset: 0;
-  transition: background 1.4s var(--ease-out);
-}
-
-/* gradient overlay: dark at bottom (text legibility), clear at top (sky shows) */
-.hero-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to top,
-    var(--color-paper)   0%,
-    var(--_p72)         22%,
-    var(--_p20)         50%,
-    transparent        100%
-  );
-}
-
-.hero-body {
-  position: relative;
-  padding: 0 var(--s7) var(--s5);
-  max-width: 640px;
-}
-
-.hero-title {
-  font-family: var(--font-serif);
-  font-size: clamp(2.8rem, 7vw + 0.5rem, 5.6rem);
-  font-weight: 400;
-  font-style: normal;
-  line-height: 1.08;
+.lp-hero__h1 {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: clamp(40px, 6vw, 64px);
+  line-height: var(--leading-tight);
   letter-spacing: -0.02em;
-  color: var(--_w96);
+  color: var(--ink-900);
+  margin: 20px 0 0;
+  text-wrap: balance;
   overflow-wrap: anywhere;
   min-width: 0;
 }
-
-.hero-sub {
+.lp-hero__sub {
   font-family: var(--font-sans);
-  font-size: var(--text-md);
-  font-weight: 300;
-  font-style: normal;
-  color: var(--_w65);
-  margin-top: var(--s3);
-  line-height: 1.5;
+  font-size: clamp(15px, 1.8vw, 18px);
+  line-height: var(--leading-body);
+  color: var(--ink-500);
+  max-width: 44ch;
+  margin: 20px 0 0;
 }
-
-.hero-foot {
-  position: relative;
+.lp-hero__ctas {
   display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  padding: 0 var(--s7) var(--s5);
-  gap: var(--s4);
+  gap: 12px;
   flex-wrap: wrap;
+  margin-top: 32px;
 }
-
-/* ── Chips — Ditther-style input-type selectors ─────────────────────── */
-.chips {
+.lp-stats {
   display: flex;
-  gap: var(--s2);
-  list-style: none;
-  flex-wrap: wrap;
-}
-
-.chip {
-  display: inline-flex;
   align-items: center;
-  height: 30px;
-  padding: 0 var(--s3);
-  font-family: var(--font-ui);
-  font-size: var(--text-xs);
-  font-weight: 400;
-  font-style: normal;
-  letter-spacing: 0.04em;
-  color: var(--_w68);
-  background: var(--_chip-dark);
-  border: 1px solid var(--_w22);
-  border-radius: var(--radius-xl);
-  cursor: default;
-  user-select: none;
-  white-space: nowrap;
+  gap: 20px;
+  margin-top: 44px;
+  flex-wrap: wrap;
 }
-
-.chip--on {
-  color: var(--color-paper);
-  background: var(--_w88);
-  border-color: transparent;
+.lp-stat { display: flex; flex-direction: column; gap: 4px; }
+.lp-stat__value {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--ink-900);
+  letter-spacing: -0.01em;
 }
-
-.hero-badge {
-  font-family: var(--font-ui);
-  font-size: var(--text-xs);
-  font-weight: 400;
-  font-style: normal;
-  letter-spacing: 0.07em;
+.lp-stat__label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--_w50);
-  white-space: nowrap;
+  color: var(--ink-300);
+}
+.lp-stat__divider {
+  width: 1px;
+  height: 32px;
+  background: var(--paper-line-strong);
+  flex-shrink: 0;
 }
 
-/* ── Shared section shell ───────────────────────────────────────────── */
-.inner {
-  max-width: 860px;
+/* ── Preview card ───────────────────────────────────────────────────── */
+.lp-hero__right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+.lp-preview-card {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px oklch(0 0 0 / 0.4);
+  animation: lp-floaty 7s ease-in-out infinite;
+  transition: background 0.6s ease;
+}
+@keyframes lp-floaty {
+  0%, 100% { transform: translateY(0) rotate(-1.5deg); }
+  50%       { transform: translateY(-12px) rotate(1.5deg); }
+}
+.lp-preview-card__glass {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 16px;
+  background: oklch(0 0 0 / 0.25);
+  backdrop-filter: blur(4px);
+}
+.lp-preview-card__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.lp-preview-card__mode { color: oklch(1 0 0 / 0.75); }
+.lp-regen-btn {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  border-radius: var(--radius-md);
+  border: 1px solid oklch(1 0 0 / 0.25);
+  background: transparent;
+  color: oklch(1 0 0 / 0.75);
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease;
+}
+.lp-regen-btn:hover {
+  background: oklch(1 0 0 / 0.12);
+  color: oklch(1 0 0 / 1);
+}
+.lp-regen-btn:active { transform: translateY(1px); }
+.lp-preview-card__code {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: oklch(1 0 0 / 0.85);
+  white-space: pre;
+  line-height: 1.6;
+  background: oklch(0 0 0 / 0.30);
+  border-radius: 6px;
+  padding: 10px 12px;
+}
+.lp-swatches { display: flex; gap: 8px; }
+.lp-swatch {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px oklch(0 0 0 / 0.3);
+  transition: background 0.6s ease;
+}
+
+/* ── Trust strip ────────────────────────────────────────────────────── */
+.lp-trust {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  flex-wrap: wrap;
+  padding: 20px clamp(20px, 5vw, 64px);
+  border-top: 1px solid var(--paper-line);
+  border-bottom: 1px solid var(--paper-line);
+}
+.lp-trust__label { color: var(--ink-300); flex-shrink: 0; }
+.lp-trust__co {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-500);
+  letter-spacing: 0.02em;
+}
+
+/* ── Shared section helpers ─────────────────────────────────────────── */
+.lp-section { position: relative; z-index: 1; }
+.lp-section__inner {
+  max-width: var(--content-max);
   margin: 0 auto;
-  padding: 0 var(--s7);
+  padding: 0 clamp(20px, 5vw, 64px);
 }
-
-/* ── Eyebrow — sora-blue label, used ≤ 2× per page ─────────────────── */
-.eyebrow {
-  font-family: var(--font-ui);
-  font-size: var(--text-xs);
-  font-weight: 400;
-  font-style: normal;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-  color: var(--color-accent);
-  margin-bottom: var(--s3);
-}
-
-/* ── Section headings ───────────────────────────────────────────────── */
-.sec-title {
-  font-family: var(--font-serif);
-  font-size: clamp(1.75rem, 3.5vw + 0.5rem, 3rem);
-  font-weight: 400;
-  font-style: normal;
-  line-height: 1.15;
+.lp-section__head { margin-bottom: 40px; }
+.lp-section__head .g-label { display: block; margin-bottom: 8px; }
+.lp-section__title {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: clamp(28px, 4vw, 40px);
   letter-spacing: -0.015em;
-  color: var(--color-ink);
+  line-height: var(--leading-tight);
+  color: var(--ink-900);
+  margin: 0;
   overflow-wrap: anywhere;
   min-width: 0;
-}
-
-.sec-sub {
-  font-family: var(--font-sans);
-  font-size: var(--text-base);
-  font-weight: 300;
-  font-style: normal;
-  color: var(--color-ink-2);
-  line-height: 1.75;
-  margin-top: var(--s3);
-  max-width: 58ch;
-}
-
-.sec-sub code {
-  font-family: var(--font-ui);
-  font-size: 0.9em;
-  color: var(--color-ink);
-  background: var(--color-paper-3);
-  padding: 1px 5px;
-  border-radius: var(--radius-md);
 }
 
 /* ── How it works ───────────────────────────────────────────────────── */
-.how {
-  padding: var(--s9) 0 var(--s8);
-  background: var(--color-paper);
-}
-
-/* ── Steps: F4 — vertical stack, 01/02/03, hairline separators ─────── */
-.steps {
-  list-style: none;
-  margin-top: var(--s7);
-  border-top: 1px solid var(--color-rule);
-}
-
-.step {
+.lp-how { padding: clamp(80px, 12vh, 120px) 0; }
+.lp-how__accentlabel { color: var(--clay); }
+.lp-how__grid {
   display: grid;
-  grid-template-columns: 4.5ch 1fr;
-  gap: var(--s5);
-  padding: var(--s6) 0;
-  border-bottom: 1px solid var(--color-rule);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+.lp-how__card-preview { height: 120px; width: 100%; }
+.lp-how__num { margin-bottom: 12px; }
+.lp-how__example {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--clay);
+  background: var(--clay-tint);
+  border-radius: 4px;
+  padding: 6px 10px;
+  margin-top: 12px;
+  letter-spacing: 0.02em;
+}
+
+/* ── Gallery ────────────────────────────────────────────────────────── */
+.lp-gallery { padding: clamp(80px, 12vh, 120px) 0; }
+.lp-gallery__accentlabel { color: var(--lilac); }
+.lp-gallery__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 36px;
+}
+.lp-gallery__item {
+  aspect-ratio: 1 / 1.15;
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+}
+.lp-gallery__label {
+  position: absolute;
+  left: 10px; bottom: 9px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: oklch(1 0 0 / 0.85);
+  text-shadow: 0 1px 4px oklch(0 0 0 / 0.4);
+}
+
+/* ── API teaser ─────────────────────────────────────────────────────── */
+.lp-api { padding: clamp(80px, 12vh, 120px) 0; }
+.lp-api__accentlabel { color: var(--sky); }
+.lp-api__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 60px;
   align-items: start;
 }
-
-.step-n {
-  font-family: var(--font-ui);
-  font-size: var(--text-xs);
-  font-weight: 400;
-  font-style: normal;
-  letter-spacing: 0.08em;
-  color: var(--color-ink-3);
-  padding-top: 0.2em;
-}
-
-.step-text {
+.lp-api__left {
   display: flex;
   flex-direction: column;
-  gap: var(--s2);
 }
-
-.step-head {
-  font-family: var(--font-ui);
-  font-size: var(--text-base);
-  font-weight: 400;
-  font-style: normal;
-  letter-spacing: -0.01em;
-  color: var(--color-ink);
-}
-
-.step-body {
+.lp-api__left .g-label { margin-bottom: 10px; }
+.lp-api__body {
   font-family: var(--font-sans);
-  font-size: var(--text-sm);
-  font-weight: 300;
-  font-style: normal;
-  color: var(--color-ink-2);
-  line-height: 1.75;
-  max-width: 62ch;
-}
-
-.step-body code {
-  font-family: var(--font-ui);
-  font-size: 0.9em;
-  color: var(--color-ink);
-  background: var(--color-paper-3);
-  padding: 1px 4px;
-  border-radius: var(--radius-md);
-}
-
-/* ── Endpoints section ──────────────────────────────────────────────── */
-.eps {
-  padding: var(--s8) 0 var(--s9);
-  background:
-    radial-gradient(ellipse 55% 38% at 88% 14%, var(--_bloom) 0%, transparent 52%),
-    var(--color-paper);
-}
-
-/* stacked full-width list — avoids 3-equal-column icon-grid anti-pattern */
-.ep-list {
-  list-style: none;
-  margin-top: var(--s6);
-  display: flex;
-  flex-direction: column;
-  gap: var(--s4);
-}
-
-/* elevated surface — no glassmorphism, no border-left stripe */
-.ep-card {
-  background: var(--color-paper-2);
-  border: 1px solid var(--_w06);
-  border-radius: var(--radius-xl);
-  padding: var(--s5) var(--s6);
-  display: flex;
-  flex-direction: column;
-  gap: var(--s3);
-  transition: border-color 160ms var(--ease-out);
-}
-.ep-card:hover { border-color: oklch(from var(--color-rule) l c h / 0.28); }
-
-.ep-head {
-  display: flex;
-  align-items: center;
-  gap: var(--s3);
-  flex-wrap: wrap;
-}
-
-.ep-tag {
-  font-family: var(--font-ui);
-  font-size: var(--text-xs);
-  font-weight: 400;
-  font-style: normal;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  color: var(--color-accent);
-  background: var(--_a10);
-  border: 1px solid var(--_a20);
-  padding: 2px 8px;
-  border-radius: var(--radius-md);
-}
-
-.ep-path {
-  font-family: var(--font-ui);
-  font-size: var(--text-sm);
-  font-style: normal;
-  color: var(--color-ink);
-  letter-spacing: 0;
-}
-
-.ep-desc {
-  font-family: var(--font-sans);
-  font-size: var(--text-sm);
-  font-weight: 300;
-  font-style: normal;
-  color: var(--color-ink-2);
-  line-height: 1.75;
-  max-width: 64ch;
-}
-
-.ep-sample {
-  font-family: var(--font-ui);
-  font-size: var(--text-xs);
-  font-style: normal;
-  color: var(--_ep-glow);
-  background: var(--_ep-bg);
-  border: 1px solid var(--_w06);
-  border-radius: var(--radius-lg);
-  padding: var(--s3) var(--s4);
-  overflow-x: auto;
-  white-space: pre;
-}
-
-/* ── CTA strip ──────────────────────────────────────────────────────── */
-.cta {
-  padding: var(--s8) 0;
-  border-top: 1px solid var(--color-rule);
-}
-
-.cta-inner {
-  display: flex;
-  align-items: center;
-  gap: var(--s4);
-  flex-wrap: wrap;
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  height: 42px;
-  padding: 0 var(--s5);
-  font-family: var(--font-ui);
-  font-size: var(--text-xs);
-  font-weight: 400;
-  font-style: normal;
-  letter-spacing: 0.05em;
-  text-decoration: none;
-  border-radius: var(--radius-xl);
-  white-space: nowrap;
-  transition: background 140ms var(--ease-out), border-color 140ms var(--ease-out), color 140ms var(--ease-out);
-}
-.btn:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; }
-
-.btn--fill {
-  background: var(--color-accent);
-  color: var(--color-paper);
-  border: 1px solid transparent;
-}
-.btn--fill:hover { background: var(--color-accent-soft); }
-
-.btn--ghost {
-  background: transparent;
-  color: var(--color-ink-2);
-  border: 1px solid var(--color-rule-mid);
-}
-.btn--ghost:hover { color: var(--color-ink); border-color: var(--color-ink-3); }
-
-/* ── Footer: Ft5 Statement ──────────────────────────────────────────── */
-.foot {
-  padding: var(--s7) 0 var(--s6);
-  border-top: 1px solid var(--color-rule);
-}
-
-.foot-inner {
-  display: flex;
-  flex-direction: column;
-  gap: var(--s5);
-}
-
-.foot-stmt {
-  font-family: var(--font-serif);
-  font-size: clamp(1.4rem, 2.5vw + 0.4rem, 2.2rem);
-  font-weight: 400;
-  font-style: normal;
-  line-height: 1.25;
-  letter-spacing: -0.01em;
-  color: var(--color-ink);
+  font-size: 16px;
+  line-height: var(--leading-body);
+  color: var(--ink-500);
+  margin-top: 16px;
   max-width: 38ch;
+}
+.lp-api__cta { margin-top: 28px; }
+.lp-api__right { padding-top: 24px; }
+.lp-api__code-block {
+  background: var(--paper-raised);
+  border: 1px solid var(--paper-line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.lp-api__code-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--paper-line);
+}
+.lp-api__code {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.7;
+  padding: 14px;
+  color: var(--ink-700);
+  white-space: pre;
+  overflow-x: auto;
+  margin: 0;
+}
+.lp-api__code--resp { margin-top: 8px; }
+.lp-api__code-response {
+  padding: 12px 14px;
+  border-top: 1px solid var(--paper-line);
+}
+.lp-code-dim  { color: var(--ink-300); }
+.lp-code-clay { color: var(--clay); }
+.lp-code-sage { color: var(--sage); }
+
+/* ── CTA band ───────────────────────────────────────────────────────── */
+.lp-cta-band { padding: clamp(80px, 12vh, 120px) 0; }
+.lp-cta-band__card {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  padding: clamp(60px, 10vh, 96px) clamp(32px, 6vw, 80px);
+  text-align: center;
+}
+.lp-cta-band__bg {
+  position: absolute;
+  inset: 0;
+  background: var(--sunrise);
+}
+.lp-cta-band__overlay {
+  position: absolute;
+  inset: 0;
+  background: oklch(0.155 0.008 60 / 0.25);
+}
+.lp-cta-band__content { position: relative; }
+.lp-cta-band__title {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: clamp(32px, 5vw, 56px);
+  letter-spacing: -0.02em;
+  line-height: var(--leading-tight);
+  color: oklch(0.16 0.01 60);
+  margin: 0;
   overflow-wrap: anywhere;
   min-width: 0;
 }
+.lp-cta-band__sub {
+  font-family: var(--font-sans);
+  font-size: 17px;
+  color: oklch(0.16 0.01 60 / 0.80);
+  max-width: 40ch;
+  margin: 18px auto 0;
+  line-height: var(--leading-body);
+}
+.lp-cta-band__btns {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 32px;
+}
+.lp-cta-band__btn-primary {
+  background: oklch(0.16 0.01 60);
+  color: oklch(0.97 0.004 80);
+  border-color: transparent;
+}
+.lp-cta-band__btn-primary:hover { background: oklch(0.22 0.01 60); }
+.lp-cta-band__btn-secondary {
+  background: transparent;
+  border-color: oklch(0.16 0.01 60 / 0.5);
+  color: oklch(0.16 0.01 60);
+}
+.lp-cta-band__btn-secondary:hover { background: oklch(0.16 0.01 60 / 0.10); }
 
-.foot-meta {
+/* ── Footer ─────────────────────────────────────────────────────────── */
+.lp-footer {
+  border-top: 1px solid var(--paper-line);
+  position: relative;
+  z-index: 1;
+}
+.lp-footer__inner {
   display: flex;
   align-items: center;
-  gap: var(--s4);
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  padding-top: 36px;
+  padding-bottom: 52px;
+}
+.lp-footer__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--ink-900);
+}
+.lp-footer__name {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 15px;
+}
+.lp-footer__copy { color: var(--ink-300); }
+.lp-footer__links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
   flex-wrap: wrap;
 }
 
-.foot-mark {
-  font-family: var(--font-ui);
-  font-size: var(--text-xs);
-  font-weight: 400;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-ink-2);
-}
-
-.foot-lnk {
-  font-family: var(--font-ui);
-  font-size: var(--text-xs);
-  letter-spacing: 0.04em;
-  text-decoration: none;
-  color: var(--color-ink-3);
-  transition: color 120ms var(--ease-out);
-}
-.foot-lnk:hover { color: var(--color-ink); }
-.foot-lnk:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; border-radius: var(--radius-md); }
-
-/* ── Responsive — 768 px ────────────────────────────────────────────── */
+/* ── Mobile ─────────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
-  .nav    { padding: var(--s4) var(--s4); }
+  .lp-nav { padding: 14px clamp(16px, 4vw, 24px); gap: 12px; }
+  .lp-nav__links .g-btn { display: none; }
+  .lp-nav__links :last-child { display: inline-flex; }
 
-  .hero-body { padding: 0 var(--s4) var(--s4); }
-  .hero-foot { padding: 0 var(--s4) var(--s4); flex-direction: column; align-items: flex-start; gap: var(--s3); }
+  .lp-hero__inner {
+    grid-template-columns: 1fr;
+    padding: 120px 0 60px;
+    gap: 40px;
+  }
+  .lp-hero__h1 { font-size: clamp(32px, 8vw, 48px); }
+  .lp-hero__sub { max-width: none; }
 
-  .inner  { padding: 0 var(--s4); }
+  .lp-how__grid { grid-template-columns: 1fr; }
+  .lp-gallery__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
-  .how    { padding: var(--s7) 0 var(--s6); }
-  .eps    { padding: var(--s6) 0 var(--s7); }
+  .lp-api__inner { grid-template-columns: 1fr; gap: 32px; }
+  .lp-api__body { max-width: none; }
+  .lp-api__right { padding-top: 0; }
 
-  .step   { grid-template-columns: 4ch 1fr; gap: var(--s3); padding: var(--s5) 0; }
-
-  .ep-card  { padding: var(--s4); }
-  .ep-head  { flex-direction: column; align-items: flex-start; gap: var(--s2); }
-
-  .cta    { padding: var(--s6) 0; }
-  .cta-inner { flex-direction: column; align-items: flex-start; }
-
-  .foot   { padding: var(--s6) 0 var(--s5); }
+  .lp-footer__inner { flex-direction: column; align-items: flex-start; }
+  .lp-trust { gap: 16px; }
+  .lp-stats { gap: 16px; }
 }
 
-/* ── Responsive — 480 px ────────────────────────────────────────────── */
 @media (max-width: 480px) {
-  .hero-title  { font-size: clamp(2.2rem, 10vw, 3.2rem); }
-  .sec-title   { font-size: clamp(1.5rem, 6vw, 2rem); }
-  .foot-stmt   { font-size: 1.35rem; }
-  .nav-mark    { display: none; } /* wordmark hidden on small phones — CTA stays */
-}
-
-/* ── Reduced motion ─────────────────────────────────────────────────── */
-@media (prefers-reduced-motion: reduce) {
-  .hero-bg   { transition-duration: 0ms; }
-  .ep-card,
-  .btn,
-  .nav-mark,
-  .nav-cta,
-  .foot-lnk  { transition-duration: 0ms; }
+  .lp-hero__ctas { flex-direction: column; }
+  .lp-hero__ctas .g-btn { width: 100%; justify-content: center; }
+  .lp-cta-band__btns { flex-direction: column; align-items: center; }
+  .lp-gallery__grid { gap: 4px; }
 }
 </style>

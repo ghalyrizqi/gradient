@@ -146,7 +146,7 @@ function updateColor(hex: string) {
   nextTick(() => { _skipEmit = false; });
 }
 
-defineExpose({ updateColor });
+defineExpose({ updateColor, randomize: shuffle });
 </script>
 
 <template>

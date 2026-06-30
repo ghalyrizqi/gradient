@@ -1,14 +1,5 @@
 [
   {
-    "date": "2026-06-29",
-    "macrostructure": "Marquee Hero",
-    "theme": "custom",
-    "theme_axes": "dark / serif-roman / cool",
-    "vibe": "cinematic sky, Ditther-inspired full-bleed hero",
-    "enrichment": "none — live gradient from API",
-    "brief": "Small Window landing page — Marquee Hero, live gradient hero bg, How-It-Works steps, stacked endpoint cards, N9 nav, Ft5 footer"
-  },
-  {
     "date": "2026-06-23",
     "macrostructure": "Split Studio",
     "theme": "custom",
@@ -25,5 +16,32 @@
     "vibe": "nuevo.tokyo reductionist studio",
     "enrichment": "none",
     "brief": "Gradient app — revamp UI to mimic nuevo.tokyo reductionist aesthetic"
+  },
+  {
+    "date": "2026-06-29",
+    "macrostructure": "Marquee Hero",
+    "theme": "custom",
+    "theme_axes": "dark / serif-roman / cool",
+    "vibe": "cinematic sky, Ditther-inspired full-bleed hero",
+    "enrichment": "live gradient from API",
+    "brief": "Small Window landing page — Marquee Hero, live gradient hero bg, How-It-Works steps, stacked endpoint cards"
+  },
+  {
+    "date": "2026-06-29",
+    "macrostructure": "Broadsheet Magazine",
+    "theme": "custom",
+    "theme_axes": "light / grotesque-sans / near-monochrome + grain",
+    "vibe": "Swiss editorial + Sho Shibuya newspaper gradient painting + Kinfolk restraint",
+    "enrichment": "gradient image strips (API self-demo) + ambient bloom behind SVG artwork",
+    "brief": "Redesign LandingPage.vue — Swiss editorial DNA from ditther.app reference, paper grain, asymmetric hero artwork, light palette override"
+  },
+  {
+    "date": "2026-06-30",
+    "macrostructure": "Multi-page handoff (landing / studio / docs / showcase)",
+    "theme": "custom",
+    "theme_axes": "dark / mono-forward / warm",
+    "vibe": "Sho Shibuya sunrise over warm-paper dark, IBM Plex Mono instrument voice, clay accent",
+    "enrichment": "animated ambient backdrop blobs + floating live-cycling gradient preview card + editorial cover/specimen gallery on showcase",
+    "brief": "Implemented full Claude Design handoff (multi-page-routing-structure) across all 4 pages: new src/ds.css design system (paper/ink/clay tokens, g-btn/g-card/g-badge/g-nav components), LandingPage.vue full rewrite, App.vue top bar + studio layout, DocsApp.vue palette migration, new MarketingPage.vue showcase page wired to /showcase"
   }
 ]
